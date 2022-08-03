@@ -55,18 +55,18 @@ Help()
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo "${ITALIC_BLUE}#             HELP MENU               #"
    echo "${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
    echo
-   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-L|-S|-m|-p]"
+   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
    echo ${GREEN}
    echo "options:"
    echo "-------------------------------------------"
    echo "${YELLOW}-h ${BLUE}To show this message"
-   echo "${YELLOW}-L ${BLUE}To load the listeners menu."
+   echo "${YELLOW}-l ${BLUE}To load the listeners menu."
    echo "${YELLOW}-S ${BLUE}To load the shells menu"
    echo "${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo "${YELLOW}-p ${BLUE}To load the persistence menu."
+   echo "${YELLOW}-p ${BLUE}To load the payloads menu."
+   echo "${YELLOW}-x ${BLUE}To load the persistence menu."
    echo 
    echo 
 }
@@ -374,10 +374,9 @@ clear
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo "${ITALIC_BLUE}#             HELP MENU               #"
    echo "${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
    echo
-   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-L|-S|-m|-p]"
+   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
    echo ${GREEN}
    echo "options:"
    echo "-------------------------------------------"
@@ -385,11 +384,12 @@ clear
    echo "${YELLOW}-L ${BLUE}To load the listeners menu."
    echo "${YELLOW}-S ${BLUE}To load the shells menu"
    echo "${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo "${YELLOW}-p ${BLUE}To load the persistence menu."
+   echo "${YELLOW}-p ${BLUE}To load the payloads menu."
+   echo "${YELLOW}-x ${BLUE}To load the persistence menu."
    echo 
    echo 
 
-while getopts ":h?l?:s?:m?:p?:P?" opt; 
+while getopts ":h?l?:s?:m?:p?:x?" opt; 
 do
   case "$opt" in
        h) Help
@@ -400,9 +400,9 @@ do
          ;;
        m) mfconsole
          ;;
-       p) persist
+       p) payloads
          ;;
-       P) payloads
+       x) persist
          ;;
        *) 
          echo ${RED}
