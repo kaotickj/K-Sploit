@@ -2,7 +2,7 @@
 # K-Sploit
 ## 🕵🔎 By KaotickJ 👽 
 
-![Logo](https://kdgwebsolutions.com/assets/img/ksploit.png)
+![Logo](https://kdgwebsolutions.com/assets/img/ksploit2-0.png)
 
 KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits.
 #### Exploits, payloads, listeners for:
