@@ -46,6 +46,8 @@ UNDERLINED="${C}[5m"
 ITALIC="${C}[3m"
 
 ###############################################
+#  LOCAL ADAPTER ADDRESSES
+###############################################
 locals()
 {
     echo "               ${FGC}| Your current adapter address(es)  |${NC}${YELLOW}"
@@ -66,11 +68,14 @@ locals()
        echo "               | WLAN0: $WADDR"| sed 's/$/ /g'
     fi
 
-#    echo "               | IPV4: $THISIP"| sed 's/$/ /g'
+#    echo "               | IPV4: $THISIP"| sed 's/$/ /g'   ## Uncomment this if you want to show your ipv4 public ip address in dialogs
     echo "               -------------------------------------"
     return 
 }
 
+###############################################
+# SHOW ERRORS
+###############################################
 errors()
 {
    if [ ! "${error}" = "" ]
@@ -82,6 +87,9 @@ errors()
    return 
 }
 
+###############################################
+#  FILE CHOOSER 
+###############################################
 pickfile()
 {
 	local f="$exepath"
@@ -99,6 +107,10 @@ pickfile()
 	return
 }
 
+###############################################
+#  EXIT 1
+###############################################
+
 goodbye()
 {
   echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
@@ -106,6 +118,10 @@ goodbye()
   echo
   exit 0;
 }
+
+###############################################
+# EXIT 0
+###############################################
 
 badbye()
 {
@@ -595,12 +611,14 @@ listeners()
    echo "	  |---------------------------------------------|"
    echo "	  |    🐚${GREEN} 4 ${BLUE}Bash Reverse TCP listener.          ${YELLOW}|"
    echo "	  |---------------------------------------------|"
+   echo "	  |    🐱${GREEN} 5 ${BLUE}Netcat listener.                    ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
    echo
    echo
    locals
@@ -645,7 +663,7 @@ listeners()
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_linux.rc | xterm -e msfconsole -r $wdir/meterpreter_linux.rc 
+            cat $wdir/meterpreter_linux.rc | 
 	    sleep 2
             goto listen;
             ;;
@@ -692,6 +710,23 @@ listeners()
 	    sleep 2
             goto listen;
             ;;  
+         5)
+            echo
+            touch $wdir/nclistener.sh
+            echo "    ${FGC}  Crafting a Windows Meterpreter Reverse TCP Listener :    ${NC}${YELLOW}"
+            read -p '	    Set Attacker Port* ' attackerport
+            echo "sudo nc -lvnp $attackerport" >$wdir/nclistener.sh
+	    echo "${GREEN}            ---> Saved to $wdir/nclistener.sh"
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on Port: $attackerport."
+            chmod +x $wdir/nclistener.sh
+            xterm -e /usr/bin/bash $wdir/nclistener.sh	    
+            rm $wdir/nclistener.sh
+	    sleep 2
+            goto listen;
+            ;;
          q)
             clear
             goto $start
@@ -840,7 +875,7 @@ malexe()
 		echo ${LIGHT_CYAN}
 		echo "   	       Loaded: $exepath"
 	   else
-	      echo -e "   	     ⚠️ ${FGC}Consider:  (sudo apt-get install dialog)  ${NC}${LIGHT_CYAN}"
+	      echo -e "   	      ${FGC} ⚠️   Consider:  (sudo apt-get install dialog)  ${NC}${LIGHT_CYAN}"
 	      echo	
 	      read -p '   	       Path to exe for injection*' exepath
         fi
