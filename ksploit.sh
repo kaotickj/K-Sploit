@@ -496,7 +496,7 @@ linpayloads()
 	;;
 	q)
 	  clear
-	  payloads
+	  goto pay;
 	;;
 	*)
           clear 
@@ -570,7 +570,7 @@ winpayloads()
 	;;
 	q)
 	  clear
-	  payloads
+	  goto pay;
 	;;
 	*)
           clear 
@@ -725,7 +725,7 @@ listeners()
             ;;
          q)
             clear
-            goto $start
+            goto start;
             ;;
          *)
            clear 
