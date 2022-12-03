@@ -32,5 +32,5 @@ Use the windows executable injection menu to inject metasploit payloads into win
 ##### Consider Dialog Error
 ![Dialog Error](https://kdgwebsolutions.com/assets/img/ksploit-no-dialog.png)
 
-Relax... it's not an error, it's a suggestion.  If you would like a graphical interface to select files for injection, install "dialog" (https://pkg.kali.org/pkg/dialog).  Otherwise, you can just type the full pathe to the exed you want to inject (i.e., /home/user/pre-male-exes/putty.exe) and hit "enter"
+Relax... it's not an error, it's a suggestion.  If you would like a graphical interface to select files for injection, install "dialog" (https://pkg.kali.org/pkg/dialog).  Otherwise, you can just type the full path to the exe you want to inject (i.e., /home/user/pre-mal-exes/putty.exe) and hit "enter"
  
