@@ -33,4 +33,13 @@ Use the windows executable injection menu to inject metasploit payloads into win
 ![Dialog Error](https://kdgwebsolutions.com/assets/img/ksploit-no-dialog.png)
 
 Relax... it's not an error, it's a suggestion.  If you would like a graphical interface to select files for injection, install "dialog" (https://pkg.kali.org/pkg/dialog).  Otherwise, you can just type the full path to the exe you want to inject (i.e., /home/user/pre-mal-exes/putty.exe) and hit "enter"
+
+## Disclaimer
+
+The KSploit script is a tool intended for legitimate penetration testing and security research purposes only. It should only be used with explicit permission and in accordance with all applicable laws and regulations. The ability to generate malicious payloads and shell scripts raises significant ethical and legal concerns. Users of this tool are solely responsible for ensuring their actions are authorized and lawful.
+
+Under no circumstances should this script be used to gain unauthorized access to systems, disrupt operations, or conduct any other malicious activities. The author and distributors of this tool will not be held liable for any misuse or damages resulting from its use.
+
+It is the user's responsibility to only utilize KSploit within the scope of their authorized testing activities, to respect the privacy and security of all parties involved, and to discontinue use if concerns arise about the legality or ethics of their actions. Improper or illegal use of this tool may result in severe civil and criminal penalties.
+
  
