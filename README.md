@@ -6,6 +6,8 @@
 
 >KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits. Requires metasploit framework https://github.com/rapid7/metasploit-framework
 
+For complete documentation see [KSploit Wiki](https://github.com/kaotickj/K-Sploit/wiki)
+>
 #### Exploits, payloads, listeners for:
 🖥Windows 🐧 Linux 🍎 Mac 🤖 Android
  
