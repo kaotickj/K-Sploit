@@ -609,7 +609,7 @@ listeners()
    echo "	  |---------------------------------------------|"
    echo "	  |    🍎${GREEN} 3 ${BLUE}OSX Reverse TCP listener.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐚${GREEN} 4 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
+   echo "	  |    🤖${GREEN} 4 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🐱${GREEN} 5 ${BLUE}Netcat listener.                    ${YELLOW}|"
    echo "	  |---------------------------------------------|"
