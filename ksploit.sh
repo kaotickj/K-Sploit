@@ -611,8 +611,6 @@ listeners()
    echo "	  |---------------------------------------------|"
    echo "	  |    🤖${GREEN} 4 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐱${GREEN} 5 ${BLUE}Netcat listener.                    ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
@@ -706,23 +704,6 @@ listeners()
 	    sleep 2
             goto listen;
             ;;  
-         5)
-            echo
-            touch $wdir/nclistener.sh
-            echo "    ${FGC}  Crafting a Windows Meterpreter Reverse TCP Listener :    ${NC}${YELLOW}"
-            read -p '	    Set Attacker Port* ' attackerport
-            echo "sudo nc -lvnp $attackerport" >$wdir/nclistener.sh
-	    echo "${GREEN}            ---> Saved to $wdir/nclistener.sh"
-	    echo "${GREEN}            ---> Finished crafting listener."
-	    sleep 1
-	    echo
-	    echo "${YELLOW}            ---> Starting listener on Port: $attackerport."
-            chmod +x $wdir/nclistener.sh
-            xterm -e /usr/bin/bash $wdir/nclistener.sh	    
-            rm $wdir/nclistener.sh
-	    sleep 2
-            goto listen;
-            ;;
          q)
             clear
             goto start;
