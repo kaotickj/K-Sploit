@@ -15,7 +15,7 @@ For complete documentation see [KSploit Wiki](https://github.com/kaotickj/K-Splo
 #### Shells:
 Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, python and necat options.  
  
-![Language PYTHON](https://img.shields.io/badge/Language-Python-green) ![Language PHP](https://img.shields.io/badge/Language-PHP%208-green) ![Language Ruby](https://img.shields.io/badge/Language-Ruby-green) ![Language PERL](https://img.shields.io/badge/Language-PERL-green) ![SHELL BASH](https://img.shields.io/badge/SHELL-Bash-red) ![SHELL Netcat](https://img.shields.io/badge/SHELL-NETCAT-red)
+![Language PYTHON](https://img.shields.io/badge/Language-Python-green) ![Language PHP](https://img.shields.io/badge/Language-PHP%208-green) ![Language Ruby](https://img.shields.io/badge/Language-Ruby-green) ![Language PERL](https://img.shields.io/badge/Language-PERL-green)
 
 #### Listeners:
 
