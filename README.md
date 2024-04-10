@@ -1,4 +1,5 @@
-[![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d) [![Version-1.1](https://img.shields.io/badge/Version-1.1-green)](https://img.shields.io/badge/Version-1.1-green) [![License MIT](https://img.shields.io/badge/License-MIT-blue)](https://github.com/kaotickj/DigEm/blob/main/LICENSE) [![Language BASH](https://img.shields.io/badge/Language-BASH-red)](https://www.gnu.org/software/bash/)
+[![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d) [![Version](https://img.shields.io/github/v/release/kaotickj/K-Sploit?label=Version&color=green)](https://github.com/kaotickj/K-Sploit/releases/tag/v1.1)[![License](https://img.shields.io/github/license/kaotickj/K-Sploit?label=License&color=blue)](https://github.com/kaotickj/K-Sploit/blob/main/LICENSE)[![Language](https://img.shields.io/github/languages/top/kaotickj/K-Sploit?label=Language&color=red)](https://github.com/kaotickj/K-Sploit)
+
 # K-Sploit
 ## 🕵🔎 By KaotickJ 👽 
 
