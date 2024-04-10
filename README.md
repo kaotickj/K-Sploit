@@ -12,11 +12,6 @@ For complete documentation see [KSploit Wiki](https://github.com/kaotickj/K-Splo
 #### Exploits, payloads, listeners for:
 🖥Windows 🐧 Linux 🍎 Mac 🤖 Android
  
-#### Shells:
-Use the shells menu to quickly and easily craft shell code and scripts. Choose from Bash, PERL, Ruby, PHP, and python options.  
- 
-![Language PYTHON](https://img.shields.io/badge/Language-Python-green) ![Language PHP](https://img.shields.io/badge/Language-PHP%208-green) ![Language Ruby](https://img.shields.io/badge/Language-Ruby-green) ![Language PERL](https://img.shields.io/badge/Language-PERL-green)
-
 #### Listeners:
 
 Use the listeners menu to craft and quickly deploy metasploit listeners. Choose from Windows x86/x64, Linux x86/x64, Mac/OSX, and Android listeners.
