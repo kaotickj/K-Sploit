@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script: KSploit v 1.0
+# Script: KSploit v 2.0
 # Author: kaotickj
 # Website: kdgwebsolutions.com
 
