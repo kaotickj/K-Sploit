@@ -8,7 +8,7 @@
 >Optimized for use in Kali Linux, KSploit is a user friendly menu driven control panel in which to drive many metasploit tasks. KSploit simplifies repetetive metasploit functions such as generating payloads, deploying listeners, and injecting msf payloads into Windows exectuables. Requires metasploit framework https://github.com/rapid7/metasploit-framework
 
 For complete documentation see [KSploit Wiki](https://github.com/kaotickj/K-Sploit/wiki)
->
+
 #### Exploits, payloads, listeners for:
 🖥Windows 🐧 Linux 🍎 Mac 🤖 Android
  
@@ -18,7 +18,7 @@ Use the listeners menu to craft and quickly deploy metasploit listeners. Choose 
 
 #### Payloads
 
-Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets. Payload options for meterpreter, windows x86/x64, linux x86/x64, mac/osx, android, and python.  
+Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets. Payload options for  windows x86/x64, linux x86/x64, mac/osx, android, and python.  
 
 #### Windows Executable Payload Injection:
 
