@@ -5,7 +5,7 @@
 
 ![Logo](https://kdgwebsolutions.com/assets/img/ksploit-menu-main.png)
 
->Optimized for use in Kali Linux, KSploit is a user friendly menu driven control panel in which to drive many metasploit tasks. KSploit simplifies repetetive metasploit functions such as generating payloads, deploying listeners, and injecting msf payloads into Windows exectuables. Requires metasploit framework https://github.com/rapid7/metasploit-framework
+>Optimized for use in Kali Linux, KSploit is a user friendly menu driven control panel in which to drive many metasploit tasks. KSploit simplifies repetitive metasploit functions such as generating payloads, deploying listeners, and injecting msf payloads into Windows exectuables. Requires metasploit framework https://github.com/rapid7/metasploit-framework
 
 For complete documentation see [KSploit Wiki](https://github.com/kaotickj/K-Sploit/wiki)
 
