@@ -232,18 +232,6 @@ payloads()
 linpayloads()
 {
   clear
-  echo ${LIGHT_CYAN}'
-   ____             _                 _        
-  |  _ \ __ _ _   _| | ___   __ _  __| |___ 
-  | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
-  |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
-  |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
-	      |___/                         
-   🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧	    
-'${LIGHT_MAGENTA}
-   echo "  Use the linux payloads menu to quickly and easily craft metasploit payloads for linux targets." |fmt -w 60
-   echo
-   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
    #linpay:
    clear
    echo ${YELLOW}
@@ -304,18 +292,6 @@ linpayloads()
 winpayloads()
 {
   clear
-  echo ${LIGHT_CYAN}'
-   ____             _                 _        
-  |  _ \ __ _ _   _| | ___   __ _  __| |___ 
-  | |_) / _` | | | | |/ _ \ / _` |/ _` / __|
-  |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
-  |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
-  	      |___/                         
-   🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️ 🖥️	    
-'${LIGHT_MAGENTA}
-   echo "  Use the windows payloads menu to quickly and easily craft metasploit payloads for windows targets." |fmt -w 60
-   echo
-   pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
    #winpay:
    clear
    echo ${YELLOW}
