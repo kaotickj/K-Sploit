@@ -500,11 +500,7 @@ mfconsole()
 ################################################################################
 # Persistence Menu
 ################################################################################
-
-##########
-#persist()
-##########
-filler_function()
+persist()
 {
 clear
 echo ${LIGHT_CYAN} 
@@ -824,8 +820,8 @@ function pause(){
          ;;
        3) malexe
          ;;
-       4) persist
-         ;;
+       #4) persist
+       #  ;;
        M) mfconsole
          ;;
        q)
