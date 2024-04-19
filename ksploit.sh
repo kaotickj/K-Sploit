@@ -135,7 +135,7 @@ badbye()
 # Obfuscate Payloads Menu
 ################################################################################
 obfuscate() {
-#encodemenu:
+    #encodemenu:
     clear
     echo ${YELLOW}
     echo "	   _____________________________________________"
@@ -145,6 +145,8 @@ obfuscate() {
     echo "	  |---------------------------------------------|"
     echo "	  |    🚪${GREEN} q ${BLUE}Quit to Main Menu.                  ${YELLOW}|"
     echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+    echo
+    errors
     echo ${YELLOW}
     read -n1 -p "     	  What do you want to do? Choose: [1,q] " opt
 
@@ -155,9 +157,10 @@ obfuscate() {
         q)
             goto $start
             ;;
-        *)
-            echo "Invalid choice. Please choose 1 or q."
-            ;;
+       *)
+         error="$opt is not a valid option!"
+         goto encodemenu
+        ;;
     esac
 
 encode:
@@ -378,7 +381,7 @@ linpayloads()
 	;;
 	*)
           clear 
-          errorq="$opt is not a valid option!"      	
+          error="$opt is not a valid option!"      	
           goto linpay;
 	;;
    esac
