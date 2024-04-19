@@ -183,7 +183,7 @@ encode:
     read -p "  Enter the LPORT for the payload: " lport
     
     echo
-    echo "  Please wait while I validate your input parameters and get available payloads ..." | fmt -w 60
+    echo "  Please wait while I validate your input parameters and get available encoders ..." | fmt -w 60
     echo
 
     # Check if the payload is valid
