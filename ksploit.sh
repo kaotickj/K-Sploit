@@ -1,7 +1,8 @@
 #!/bin/bash
 # Script: KSploit v 2.1
 # Author: kaotickj
-# Website: kdgwebsolutions.com
+# Github: https://github.com/kaotickj/KSploit
+# Website: https://kdgwebsolutions.com
 
 #########################################
 #----------------- VARS ----------------#
