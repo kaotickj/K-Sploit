@@ -135,28 +135,30 @@ badbye()
 # Obfuscate Payloads Menu
 ################################################################################
 obfuscate() {
-encodemenu:
+#encodemenu:
     clear
-    echo    
-    echo
-    while true; do
-        echo "${GREEN}  1. Obfuscate Payload"
-        echo "  q. Quit"
-        echo ${YELLOW}
-        read -n1 -p "  What do you want to do? Choose: [1,q] " opt
+    echo ${YELLOW}
+    echo "	   _____________________________________________"
+    echo "	  |${FGG}     KSploit Obfuscate Payloads Options:     ${NC}${YELLOW}|"
+    echo "	  |---------------------------------------------|"
+    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Obfuscate Payloads.                 ${YELLOW}|"
+    echo "	  |---------------------------------------------|"
+    echo "	  |    🚪${GREEN} q ${BLUE}Quit to Main Menu.                  ${YELLOW}|"
+    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
+    echo ${YELLOW}
+    read -n1 -p "     	  What do you want to do? Choose: [1,q] " opt
 
-        case $opt in
-            1)
-                goto encode;
-                ;;
-            q)
-                goto $start
-                ;;
-            *)
-                echo "Invalid choice. Please choose 1 or q."
-                ;;
-        esac
-    done
+    case $opt in
+        1)
+            goto encode;
+            ;;
+        q)
+            goto $start
+            ;;
+        *)
+            echo "Invalid choice. Please choose 1 or q."
+            ;;
+    esac
 
 encode:
     echo
@@ -897,7 +899,7 @@ function pause(){
    echo ${NC}
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,M,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,M,q]    " opt
    case "$opt" in
        1) listeners
          ;;
