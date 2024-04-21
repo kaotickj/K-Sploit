@@ -898,8 +898,8 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    ▶️ ${GREEN} 5 ${BLUE}Generate an Obfuscated Payload.     ${YELLOW}|"
-   echo "	  |---------------------------------------------|"
+#   echo "	  |    ▶️ ${GREEN} 5 ${BLUE}Generate an Obfuscated Payload.     ${YELLOW}|"
+#   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit.                               ${YELLOW}|"
@@ -909,7 +909,7 @@ function pause(){
    echo ${NC}
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,M,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,M,q]    " opt
    case "$opt" in
        1) listeners
          ;;
@@ -919,8 +919,8 @@ function pause(){
          ;;
        4) persist
          ;;
-       5) obfuscate
-         ;;
+#       5) obfuscate
+#         ;;
        M) mfconsole
          ;;
        q)
