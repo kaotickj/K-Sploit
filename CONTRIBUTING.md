@@ -1,4 +1,4 @@
-# Contributing to Password Genie
+# Contributing to K-Sploit
 
 Thank you for your interest in contributing to our project! Whether it's a bug report, new feature, or improvement, we appreciate your help in making this project better.
 
