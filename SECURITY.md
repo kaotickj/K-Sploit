@@ -12,6 +12,7 @@ To report a security vulnerability, please email us at [kaotickj@gmail.com](mail
 | ------- | ------------------ |
 | 3.0   | :white_check_mark: |
 | 2.1   | :white_check_mark: |
+| 2.0   | :white_check_mark: |
 | <2.0   | :x: |
 
 ## Security Updates
